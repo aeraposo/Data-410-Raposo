@@ -14,3 +14,4 @@ b = int(input("Give a value for 'b'"))
 c = math.sqrt(a**2+b**2)
 print("The hypotenuse of a triangle with side legths "+str(a)+" and "+str(b)+" is "+str(c))
 ```
+[Return to Alex's home page](https://aeraposo.github.io/Data-410-Raposo/)
