@@ -1,4 +1,5 @@
-## Welcome to GitHub Pages
+## Data 410 Repository
+### Alex Raposo
 
 You can use the [editor on GitHub](https://github.com/aeraposo/Data-410-Raposo/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
 
