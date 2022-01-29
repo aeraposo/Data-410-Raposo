@@ -2,4 +2,4 @@
 #### Alex Raposo
 
 ### Assignments and projects
-[Project 1: Hello, world!](https://aeraposo.github.io/Data-410-Raposo/helloworld.md)
+[Project 1: Hello, world!](https://aeraposo.github.io/Data-410-Raposo/helloworld)
