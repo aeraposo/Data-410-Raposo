@@ -13,5 +13,5 @@ Thus, ![Math](https://render.githubusercontent.com/render/math?math=E(X^Ty){\cd
 which allows the parametric model’s ![Math](https://render.githubusercontent.com/render/math?math=\beta) parameters associated with each vector contained in
 ![Math](https://render.githubusercontent.com/render/math?math=X) (representing the different dimensions of the data) to be calculated by
 ![Math](https://render.githubusercontent.com/render/math?math=(X^TX)^{-1}). Loess uses this same process to estimate parametric equations on
-data subintervals as described above, however, it is important to note that a widely varied distribution of datapoints can lead to overfitting
-if too few or many points are selected for each interval.
+data subintervals as described above and since weights are calculated for individual datapoints, we can ensure that although the model may not be smooth, it will be coninuous (no breaks or jumps). It is important to note that a widely varied distribution of datapoints can lead to overfitting
+if too few or many points are selected for each interval, however, modifications to the kernal (or "bump") fuction can help reduce this.
