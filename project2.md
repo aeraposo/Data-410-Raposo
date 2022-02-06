@@ -17,7 +17,7 @@ We take the expected vlaue of this equation and obtain (where ![Math](https://re
 Therefore, the predictions (predicted values) we make are <br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\bar{\beta}=\hat{y}=X\cdot\beta=X\cdot(X^TX)^{-1}(X^Ty))<br/>
 Now, we can see that predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) (ie, they are a matrix multiplied by ![Math](https://render.githubusercontent.com/render/math?math=y))<br/>
-
+#------------------- left off here
 For the locally weighted regression, we have<br/>
 $$\hat{y}=X\cdot\beta = X\cdot(X^TWX)^{-1}(X^TWy)$$
 The big idea:<br/>
