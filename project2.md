@@ -17,12 +17,15 @@ We take the expected vlaue of this equation and obtain (where ![Math](https://re
 Therefore, the predictions (predicted values) we make are <br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\bar{\beta}=\hat{y}=X\cdot\beta=X\cdot(X^TX)^{-1}(X^Ty))<br/>
 Now, we can see that predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) (ie, they are a matrix multiplied by ![Math](https://render.githubusercontent.com/render/math?math=y))<br/>
-#------------------- left off here
-For the locally weighted regression, we have<br/>
-$$\hat{y}=X\cdot\beta = X\cdot(X^TWX)^{-1}(X^TWy)$$
-The big idea:<br/>
-Now we can see that the predictions we make ($\hat{y}$) are a linear combination of the actual observed variable $y$ (a matrix times $y$).<br/>
-For loaclly weighted regression, $\hat{y}$ is obtained as a different linear combination of the value of $y$ (still a linear combination but we use the computed weights as seen above)
+Applying the above to locally weighted regression, we have<br/>
+![Math](https://render.githubusercontent.com/render/math?math=\hat{y}=X\cdot\beta=X\cdot(X^TWX)^{-1}(X^TWy))<br/>
+So in the case of Lowess, predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) and the computed weights ![Math](https://render.githubusercontent.com/render/math?math=W)
+* $W(i)$ is the vecor of weights for observation $i$
+* The indpendent observations are the rows of the matrix $X$. Each row has a number of columns (this is the number of features) - we can denote this number of features by $p$. As such, every row is a vector in $\mathbb{R}^p$.
+* The distance between 2 independent observations is the Euclidean distance (L2 norm) between the two represented $p$-dimensional vectors. The equation is:
+![Math](https://render.githubusercontent.com/render/math?math=dist(\vec{v},\vec{w})=%5Csqrt%7B%5C(v_1-w_1)^2%2B...%2B(v_p-w_p)^2%7D) where $v_i$ and $w_i$ represent features of observations $v$ and $w$. We will have $n$ different weight vectors where $n$ is the number of observations.
+
+
 
 Parametric models assume the form ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2Br\epsilon) where
 ![Math](https://render.githubusercontent.com/render/math?math=\epsilon) is independently and identically distributed with mean 0 and standard
