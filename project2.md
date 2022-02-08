@@ -20,10 +20,10 @@ Now, we can see that predictions ![Math](https://render.githubusercontent.com/re
 Applying the above to locally weighted regression, we have<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}=X\cdot\beta=X\cdot(X^TWX)^{-1}(X^TWy))<br/>
 So in the case of Lowess, predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) and the computed weights ![Math](https://render.githubusercontent.com/render/math?math=W)
-* $W(i)$ is the vecor of weights for observation $i$
-* The indpendent observations are the rows of the matrix $X$. Each row has a number of columns (this is the number of features) - we can denote this number of features by $p$. As such, every row is a vector in $\mathbb{R}^p$.
-* The distance between 2 independent observations is the Euclidean distance (L2 norm) between the two represented $p$-dimensional vectors. The equation is:
-![Math](https://render.githubusercontent.com/render/math?math=dist(\vec{v},\vec{w})=%5Csqrt%7B%5C(v_1-w_1)^2%2B...%2B(v_p-w_p)^2%7D) where $v_i$ and $w_i$ represent features of observations $v$ and $w$. We will have $n$ different weight vectors where $n$ is the number of observations.
+* ![Math](https://render.githubusercontent.com/render/math?math=W(i)) is the vecor of weights for observation ![Math](https://render.githubusercontent.com/render/math?math=i)
+* The indpendent observations are the rows of the matrix ![Math](https://render.githubusercontent.com/render/math?math=X$). Each row has a number of columns (this is the number of features) - we can denote this number of features by ![Math](https://render.githubusercontent.com/render/math?math=p). As such, every row is a vector in ![Math](https://render.githubusercontent.com/render/math?math=\mathbb{R}^p).
+* The Euclidean distance between 2 independent observations is the Euclidean distance (L2 norm) between the two represented ![Math](https://render.githubusercontent.com/render/math?math=p)-dimensional vectors. The equation is:
+![Math](https://render.githubusercontent.com/render/math?math=dist(\vec{v},\vec{w})=%5Csqrt%7B%5C(v_1-w_1)^2%2B...%2B(v_p-w_p)^2%7D) where ![Math](https://render.githubusercontent.com/render/math?math=v_i) and ![Math](https://render.githubusercontent.com/render/math?math=w_i) represent features of observations ![Math](https://render.githubusercontent.com/render/math?math=v) and ![Math](https://render.githubusercontent.com/render/math?math=w). We will have ![Math](https://render.githubusercontent.com/render/math?math=n) different weight vectors where ![Math](https://render.githubusercontent.com/render/math?math=n) is the number of observations.
 
 
 
