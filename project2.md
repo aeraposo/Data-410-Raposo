@@ -1,7 +1,7 @@
 ## Project 2: Lowess vs. Random Forest Regression
 ### Math behind the methods
 **Lowess:**<br/>
-Based on visibly discernible trends in data, one may come to quick conclusions about approximate parametric (linear) models to represent a
+     Based on visibly discernible trends in data, one may come to quick conclusions about approximate parametric (linear) models to represent a
 supposed relationship. Although this method may be an appropriate starting place in estimating a model, it is ultimately riddled with uncertainty
 and may poorly approximate more specific, localized trends. A more suitable option for such analysis is locally weighted regression, or “loess”.
 Loess approximates non-parametric trends by fitting linear models to sequential subsets of data. Subdivisions are split on intervals in one
@@ -10,7 +10,7 @@ multidimensional inputdata (a UxP matrix thats transpose is ![Math](https://rend
 dependent variable. Linear regression determines these linear models, which give a predicted ![Math](https://render.githubusercontent.com/render/math?math=y), known as ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) for each input observation ![Math](https://render.githubusercontent.com/render/math?math=x) in ![Math](https://render.githubusercontent.com/render/math?math=X). Linear regression can be seen as a linear combination of the observed outputs (values of the dependent variable). To understand why this is so, we must further investigate the math behind the assumed form of the models: ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2B\sigma\epsilon) where ![Math](https://render.githubusercontent.com/render/math?math=\epsilon) is independently and identically distributed with mean 0 and standard deviation 1.<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=X^Ty=X^TX\beta%2B\sigma{X^T\epsilon})<br/>
 
-We solve for ![Math](https://render.githubusercontent.com/render/math?math=\beta) by assuming ![Math](https://render.githubusercontent.com/render/math?math=X) is not rank deficient (assme ![Math](https://render.githubusercontent.com/render/math?math=X^TX) is invertible, same as OLS assumption). So,<br/>
+    We solve for ![Math](https://render.githubusercontent.com/render/math?math=\beta) by assuming ![Math](https://render.githubusercontent.com/render/math?math=X) is not rank deficient (assme ![Math](https://render.githubusercontent.com/render/math?math=X^TX) is invertible, same as OLS assumption). So,<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\beta=(X^TX)^{-1}(X^Ty)-\sigma(X^TX)^{-1}X^T\epsilon).<br/>
 We take the expected vlaue of this equation and obtain (where ![Math](https://render.githubusercontent.com/render/math?math=\bar{\beta}) is ![Math](https://render.githubusercontent.com/render/math?math=E(\beta)))<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\bar{\beta}=(X^TX)^{-1}(X^Ty))<br/>
