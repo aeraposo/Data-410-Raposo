@@ -60,6 +60,39 @@ MSE: ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{N}\s
 MAE: ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{N}\sum_{i=1}^N|y_i-\mu|)<br/>
 \* where *N* represents the number of observations in the data subset<br/>
 The leaves of a decision tree represent different classifications or predictions. This is why it’s important that we do not extrapolate - use the model to make predictions beyond the range or training data because our model does not encompass data behavior in these extended regions. Once the data has matriculated through all trees within the forest, each tree returns a prediction for the dependent variable y. These predictions are averaged to provide a final prediction for the y value of the test datapoint.
-### Implementing Lowess
-### Implementing Random Forest
+### Implementation
+After importing the necessary libraries and the cars dataset, I observed a significant difference in the scale of feature observations for x, the independent variable (WGT), and the dependent variable (MPG). For this reason, I opted to rescale x using SKLearn’s standard scaler prior to splitting the data into training and testing batches for each variable. Since I intended to produce graphs to visualize my model accuracy, it was necessary to reorder the data do that the x observations, which would be represented on the x-axis, were in increasing order. There are two logical ways to achieve this are outlined below: <br/>
+1. Merge observations into a data frame, use sort_values method to sort based on x observations, and reassign training and testing set variables to the indexed and reshaped columns of the sorted data frame.
+```
+# sort the training data
+train_sorted = {'xts':xtrain_scaled.ravel(), 'yt':ytrain.ravel()}
+# Create training DataFrame and sort it
+df_train_sorted = pd.DataFrame(train_sorted).sort_values('xts')
+xtrain_scaled = df_train_sorted['xts'].values.reshape(-1,1)
+ytrain = df_train_sorted['yt'].values.reshape(-1,1)
+
+# sort the testing data
+test_sorted = {'xts':xtest_scaled.ravel(), 'yt':ytest.ravel()}
+# Create testing DataFrame and sort it
+df_test_sorted = pd.DataFrame(test_sorted).sort_values('xts')
+xtest_scaled = df_test_sorted['xts'].values.reshape(-1,1)
+ytest = df_test_sorted['yt'].values.reshape(-1,1)
+```
+2. Create a matrix, sort based on the first column (x train or test) using numpy's argsort method, and reassign training and testing set variables to the indexed columns of the matrix
+
+```
+# training data
+M_train = np.column_stack([xtrain,ytrain])
+M_train = M_train[np.argsort(M[:,0])]
+xtrain = M[:,0]
+ytrain = M[:,1]
+
+# testing data
+M = np.column_stack([xtest,test])
+M = M[np.argsort(M[:,0])]
+xtest = M[:,0]
+ytest = M[:,1]
+```
+This sorting can also happen after predictions are made and the same effect will be achieved.<br/>
+
 ### Comparison using MSE
