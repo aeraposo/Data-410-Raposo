@@ -59,9 +59,7 @@ A random forest composed of n_estimators many decision trees, each with a maximu
 MSE: ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{N}\sum_{i=1}^N(y_i-\mu)^2)<br/>
 MAE: ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{N}\sum_{i=1}^N|y_i-\mu|)<br/>
 \* where *N* represents the number of observations in the data subset<br/>
-
-https://towardsdatascience.com/the-mathematics-of-decision-trees-random-forest-and-feature-importance-in-scikit-learn-and-spark-f2861df67e
-- The leaves of a decision tree represent different classifications or predictions. This is why it’s important that we do not extrapolate - use the model to make predictions beyond the range or training data because our model does not encompass data behavior in these extended regions. Once the data has matriculated through all trees within the forest, each tree returns a prediction for the dependent variable y. These predictions are averaged to provide a final prediction for the y value of the test datapoint.
+The leaves of a decision tree represent different classifications or predictions. This is why it’s important that we do not extrapolate - use the model to make predictions beyond the range or training data because our model does not encompass data behavior in these extended regions. Once the data has matriculated through all trees within the forest, each tree returns a prediction for the dependent variable y. These predictions are averaged to provide a final prediction for the y value of the test datapoint.
 ### Implementing Lowess
 ### Implementing Random Forest
 ### Comparison using MSE
