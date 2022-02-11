@@ -142,7 +142,7 @@ for a in np.arange(0.01,1,0.01):
   yhat_test = lowess_reg(xtrain_scaled.ravel(), ytrain.ravel(),xtest_scaled.ravel(), tricubic, a)
   mse_low.append(mse(yhat_test,ytest))
 ```
-
+<img src="./lowess_mse_tau_plot.png" width="200"><br/>
 ```
 # initialize a model
 regr = RandomForestRegressor(random_state=123, max_depth=2)
@@ -160,5 +160,8 @@ for md in range(1,100):
   rfr_yhat_test = regr.predict(xtest_scaled)
   mse_all.append(mse(rfr_yhat_test,ytest))
 ```
-![plot](PLOT LINK)<br/>
+<img src="./mse_rfr_min_samp_split_plot.png" width="200"><br/>
+
 In this example, random forest appears to have slightly out-performed lowess in modeling car miles per gallon (MPG). After graphing both models’ predictions (blue - lowess, red - random forest) along side the true data values, I conclude that both models are comparable in their overall utility and are ultimately very similar. Given the range of y (MPG) values in the testing data (10, 44.6) and MSEs of ~15.5 raise some concerns about the accuracy of both models. As visible in the aforementioned graph, random forrest offers a more smooth model that contributed to a slightly lower MSE, however, it is clear that the elevated MSEs were influenced by the high variance in y (MPG) among testing observations. From this example alone, one cannot deem a single method “better” than another but rather that each has their own strengths that cannot be fully encompassed by the limited testing performed above.
+<img src="./lowess_tau=0.01_plot.png" width="200"><br/>
+
