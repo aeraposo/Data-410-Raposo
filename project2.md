@@ -71,6 +71,7 @@ MAE: ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{N}\s
 The leaves of a decision tree represent different classifications or predictions. This is why it’s important that we do not extrapolate - use the model to make predictions beyond the range or training data because our model does not encompass data behavior in these extended regions. Once the data has matriculated through all trees within the forest, each tree returns a prediction for the dependent variable y. These predictions are averaged to provide a final prediction for the y value of the test datapoint.
 ### Implementation
 After importing the necessary libraries and the cars dataset, I observed a significant difference in the scale of feature observations for x, the independent variable (WGT), and the dependent variable (MPG). For this reason, I opted to rescale x using SKLearn’s standard scaler prior to splitting the data into training and testing batches for each variable. Since I intended to produce graphs to visualize my model accuracy, it was necessary to reorder the data do that the x observations, which would be represented on the x-axis, were in increasing order. There are two logical ways to achieve this are outlined below: <br/>
+
 1. Merge observations into a data frame, use sort_values method to sort based on x observations, and reassign training and testing set variables to the indexed and reshaped columns of the sorted data frame.<br/>
 
 ```
