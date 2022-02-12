@@ -7,7 +7,11 @@ and may poorly approximate more specific, localized trends. A more suitable opti
 **Lowess:**<br/>
 Lowess approximates non-parametric trends by fitting linear models to sequential subsets of data. Subdivisions are split on intervals in one dimension of the data based on a computer determined, or user specified, number of points per interval. Let ![Math](https://render.githubusercontent.com/render/math?math=X) represent
 multidimensional inputdata (a UxP matrix thats transpose is ![Math](https://render.githubusercontent.com/render/math?math=X^T)) and ![Math](https://render.githubusercontent.com/render/math?math=y) be the
-dependent variable. Linear regression is used to determine the linear models fit on the subintervals of X. Linear regression solutions can be seen as a linear combinations of the observed outputs (values of the dependent variable). To understand why this is so, we must further investigate the math behind the assumed form of the models: ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2B\sigma\epsilon) where ![Math](https://render.githubusercontent.com/render/math?math=\epsilon) is independently and identically distributed with mean 0 and standard deviation 1.<br/><br/>
+dependent variable.
+
+Linear regression is used to determine the linear models fit on the subintervals of X. Linear regression solutions can be seen as a linear combinations of the observed outputs (values of the dependent variable). To understand why this is so, we must further investigate the math behind the form of the models. Parametric models assume the form ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2Br\epsilon) where
+![Math](https://render.githubusercontent.com/render/math?math=\epsilon) is independently and identically distributed with mean 0 and standard deviation 1. To determine the ![Math](https://render.githubusercontent.com/render/math?math=\beta) parameters of the model, we write
+
 ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2B\sigma\epsilon)<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=X^Ty=X^TX\beta%2B\sigma{X^T\epsilon})<br/>
 
@@ -24,16 +28,6 @@ Applying the above to locally weighted regression, we have<br/><br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}=X\cdot\beta=X\cdot(X^TWX)^{-1}(X^TWy))<br/>
 So in the case of lowess, predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) and the computed weights ![Math](https://render.githubusercontent.com/render/math?math=W)
 * The indpendent observations are the rows of the matrix ![Math](https://render.githubusercontent.com/render/math?math=X$). Each row has a number of columns (this is the number of features) - we can denote this number of features by ![Math](https://render.githubusercontent.com/render/math?math=p). As such, every row is a vector in ![Math](https://render.githubusercontent.com/render/math?math=\mathbb{R}^p).
-
-
-Parametric models assume the form ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2Br\epsilon) where
-![Math](https://render.githubusercontent.com/render/math?math=\epsilon) is independently and identically distributed with mean 0 and standard
-deviation 1. To determine the ![Math](https://render.githubusercontent.com/render/math?math=\beta) parameters of the model, we write ![Math](https://render.githubusercontent.com/render/math?math=X^Ty=X^TX{\beta}X^T)
-where ![Math](https://render.githubusercontent.com/render/math?math=X^T) is model noise and ![Math](https://render.githubusercontent.com/render/math?math=E(X^T)=0).
-Thus, ![Math](https://render.githubusercontent.com/render/math?math=E(X^Ty){\cdot}E(X^TX\beta)=X^TX{\cdot}E(\beta)(X^TX)^{-1}{\cdot}E(X^Ty)=E(\beta)),
-which allows the parametric model’s ![Math](https://render.githubusercontent.com/render/math?math=\beta) parameters associated with each vector contained in
-![Math](https://render.githubusercontent.com/render/math?math=X) (representing the different dimensions of the data) to be calculated by ![Math](https://render.githubusercontent.com/render/math?math=(X^TX)^{-1}).
-
 
 Lowess uses this same process to estimate parametric equations on data subintervals as described above and since weights are calculated for individual datapoints, we can ensure that although the model may not be smooth, it will be continuous (no breaks or jumps). It is important to note that a widely varied distribution of datapoints can lead to overfitting if too few or many points are selected for each interval, however, modifications to the kernal (or "bump") fuction can help reduce this.<br/>
 Lowess predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) and the computed weights ![Math](https://render.githubusercontent.com/render/math?math=W)
