@@ -137,7 +137,7 @@ regr = RandomForestRegressor(random_state=123, max_depth=3)
 regr.fit(xtrain_scaled, ytrain.ravel())
 ```
 **Random forest results:**<br/>
-To qualify the utility of the model, I found the mean squared error (MSE). Since the maximum depth has a strong influence on model fit, as it limits the size of internal decision trees, I reinitialized a random forest model with increasing maximum depths while recording the MSE of these models’ predictions on the testing data, which is seen in the code segment and following plot below. As we can see, a maximum depth of 3 proved to be ideal in reducing MSE in this case. The MSE for this random forest was 15.887.<br/>
+To qualify the utility of the model, I found the mean squared error (MSE). Since maximum depth can strongly influence model fit (too deep or shallow of trees can result in over or under fitting, particularly in small/medium sized datasets), I repeatedly initialized random forest models with increasing maximum depths while recording the MSE of these models’ predictions on the testing data. This process is outlined in the code segment and following plot below. As we can see, a maximum depth of 3 proved to be ideal in reducing MSE in this case. The MSE of predictions from this final random forest model was 15.887.<br/>
 ```
 mse_all = []
 for md in range(1,100):
@@ -148,6 +148,6 @@ for md in range(1,100):
 ```
 <img src="./mse_rfr_min_samp_split_plot.png" width="400"><br/>
 **Concluding remarks:**<br/>
-In this example, random forest appears to have slightly out-performed lowess in modeling car miles per gallon (MPG). After graphing both models’ predictions (blue - lowess, red - random forest) along side the true data values, I conclude that both models are comparable in their overall utility and are ultimately very similar. Given the range of y (MPG) values in the testing data (10, 44.6) and MSEs of ~15.5 raise some concerns about the accuracy of both models. As visible in the aforementioned graph, random forrest offers a more smooth model that contributed to a slightly lower MSE, however, it is clear that the elevated MSEs were influenced by the high variance in y (MPG) among testing observations. From this example alone, one cannot deem a single method “better” than another but rather that each has their own strengths that cannot be fully encompassed by the limited testing performed above.<br/>
+In this example, random forest appears to have slightly out-performed lowess in modeling car miles per gallon (MPG). After graphing both models’ predictions (blue - lowess, red - random forest) along side the true data values (y), I conclude that both models are comparable in their overall utility and are ultimately very similar. Given the range of y (MPG) values in the testing data (10, 44.6) and models' MSEs of ~15.5, I questioned the accuracy of both models. As visible in the aforementioned graph, random forrest offers a more smooth model that contributed to a slightly lower MSE, however, it is clear that the elevated MSEs were influenced by the high variance in y (MPG) among testing observations. From this example alone, one cannot deem a single method “better” than another but rather that each has their own strengths that cannot be fully encompassed by the limited testing performed above.<br/>
 <img src="./lowess_tau=0.01_plot.png" width="400"><br/>
 
