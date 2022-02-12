@@ -6,7 +6,7 @@ and may poorly approximate more specific, localized trends. A more suitable opti
 ### Math and theory
 **Lowess:**<br/>
 Lowess approximates non-parametric trends by fitting linear models to sequential subsets of data. Subdivisions are split on intervals within the data based on a computer determined, or user specified, number of points per interval. Let ![Math](https://render.githubusercontent.com/render/math?math=X) represent
-multidimensional inputdata (a UxP matrix thats transpose is ![Math](https://render.githubusercontent.com/render/math?math=X^T)) and ![Math](https://render.githubusercontent.com/render/math?math=y) be the
+multidimensional input data (a UxP matrix thats transpose is ![Math](https://render.githubusercontent.com/render/math?math=X^T)) and ![Math](https://render.githubusercontent.com/render/math?math=y) be the
 dependent variable.
 
 Linear regression is used to determine the linear models fit on the subintervals of X. Linear regression solutions can be seen as a linear combinations of the observed outputs (values of the dependent variable). To understand why this is so, we must further investigate the math behind the form of the models. Parametric models assume the form ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2Br\epsilon) where
