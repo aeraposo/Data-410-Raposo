@@ -50,6 +50,7 @@ MAE: ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{N}\s
 \* where *N* represents the number of observations in the data subset.<br/>
 If a node is split, a new parent node is created, which is populated in the next level up of the decision tree. Once the regressor has been trained, its accuracy and utility can be tested using our reserved quantity of testing data. Testing data point  matriculated through all trees within the forest and each tree returns a prediction for the dependent variable y. These predictions are averaged to provide a final prediction (![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) for the y value of the test datapoint. Predictions on testing data can then be compared to the true values of the dependent variable using statistical metrics such as MSE, which allows the user gauge the model's accuracy prior to its use. When using a random forest to make predictions, one must recall that the leaves of interal decision trees represent the full, finite range of predictions the model is capable of making. This is one reason why it’s important that we do not extrapolate (use the model to make predictions beyond convex hull of the training data) because our model does not encompass data behavior in these extended regions.<br/>
 ### Implementation
+**Lowess**<br/>
 After importing the necessary libraries and the cars dataset, I observed a significant difference in the scale of feature observations for x, the independent variable (WGT), and the dependent variable (MPG). For this reason, I opted to rescale x using SKLearn’s standard scaler prior to splitting the data into training and testing batches for each variable. Since I intended to produce graphs to visualize my model accuracy, it was necessary to reorder the data so that the x observations, which would be represented on the x-axis, were in increasing order. There are two logical ways to achieve this sorting, which are outlined below: <br/>
 
 1) Merge observations into a data frame, use the sort_values method to sort based on x observations, and assign training and testing set variable names to the indexed and reshaped columns of the sorted data frame.<br/>
@@ -127,6 +128,7 @@ for a in np.arange(0.01,1,0.01):
 ```
 Lowess prediction MSE with varying tau values:<br/>
 <img src="./lowess_mse_tau_plot.png" width="400"><br/><br/><br/>
+**Random forest**<br/>
 <img src="./random_forests.png" width="600"><br/><br/>
 
 From a user perspective lowess offers some challenges in both mathematical understanding and implementation so for comparison, let's next look at a random forest. Unlike the scenic random forests pictured above, random forest is another form of non-parametric regression modeling. After initializing a random forest model, I fit the model to the sorted training data using a maximum depth of 2 as a starting point.<br/>
