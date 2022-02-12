@@ -125,7 +125,7 @@ for a in np.arange(0.01,1,0.01):
   mse_low.append(mse(yhat_test,ytest))
 ```
 <img src="./lowess_mse_tau_plot.png" width="400"><br/>
-<img src="./random_forests.png" width="400"><br/><br/><br/>
+<img src="./random_forests.png" width="600"><br/><br/><br/>
 
 From a user perspective lowess offers some challenges in both mathematical understanding and implementation so for comparison, let's next look at a random forest. Unlike the random forests above, random forest is another form of non-parametric regression modeling. After initializing a random forest model, I fit the model to the sorted training data using a maximum depth of 2 as a starting point.<br/>
 
