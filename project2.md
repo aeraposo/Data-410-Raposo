@@ -37,23 +37,6 @@ which allows the parametric model’s ![Math](https://render.githubusercontent.c
 ![Math](https://render.githubusercontent.com/render/math?math=(X^TX)^{-1}). Loess uses this same process to estimate parametric equations on
 data subintervals as described above and since weights are calculated for individual datapoints, we can ensure that although the model may not be smooth, it will be coninuous (no breaks or jumps). It is important to note that a widely varied distribution of datapoints can lead to overfitting
 if too few or many points are selected for each interval, however, modifications to the kernal (or "bump") fuction can help reduce this.<br/>
-**Important concept:** 
-
-
-
-
-**Why?** We have 
-We solve for $\beta$ by assuming X is not rank deficient (assme $X^TX$ is invertible, OLS assumption). So,<br/>
-$$\beta = (X^TX)^{-1}(X^Ty)-\sigma(X^TX)^{-1}X^T\epsilon$$
-We take the expected vlaue of this equation and obtain (where $\bar{\beta}$ is $E(\beta)$)
-$$\bar{\beta} = (X^TX)^{-1}(X^Ty)$$
-Therefore, the predictions (predicted values) we make are 
-$$\hat{y}=X\cdot\beta = X\cdot(X^TX)^{-1}(X^Ty)$$
-For the locally weighted regression, we have
-$$\hat{y}=X\cdot\beta = X\cdot(X^TWX)^{-1}(X^TWy)$$
-The big idea:<br/>
-Now we can see that the predictions we make ($\hat{y}$) are a linear combination of the actual observed variable $y$ (a matrix times $y$).<br/>
-For loaclly weighted regression, $\hat{y}$ is obtained as a different linear combination of the value of $y$ (still a linear combination but we use the computed weights as seen above)<br/><br/><br/>
 * Note - weights (W_i) are computed for each observation (x_i) by plugging the Euclidean distance between this observation and each other observation into the selected kernal function. These weights are represented in an dianal nxn matrix (where n is the number of observations).<br/>
 ```
 # example - computing the wieghts for each observation contained in data x
