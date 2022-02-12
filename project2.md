@@ -132,8 +132,6 @@ def lowess_reg(x, y, xnew, kern, tau): # x (independent variable), y (dependent 
 # use the model to make predictions (yhat_test) for the testing data
 yhat_test = lowess_reg(xtrain_scaled.ravel(), ytrain.ravel(),xtest_scaled.ravel(), tricubic, 0.01)
 ```
-Here we can see the role of the kernel function, in this case the tricubic kernel function, in ———. 
-- Describe the input parameters
 I used mean squared error (MSE) to quantify the accuracy of the lowess model, which was found to be 19.274.
 Tau influences the amplitude of the bump function, which is used to compute model weights that ultimately contribute to model smoothing. After graphing the original model predictions against the true testing data values, I noticed significant irregularities in the graph and, as a result plotted the MSE of model predictions after fitting using different values for tau as seen in the code segment below. After determining the minimum MSE achieved, 15.962 using tau = 0.1 as seen in the graph below, I selected a final lowess model.
 ```
@@ -143,15 +141,18 @@ for a in np.arange(0.01,1,0.01):
   mse_low.append(mse(yhat_test,ytest))
 ```
 <img src="./lowess_mse_tau_plot.png" width="400"><br/>
+<img src="./lowess_tau=0.01_plot.png" width="400"><br/><br/><br/>
+
+From a user perspective lowess offers some challenges in both mathematical understanding and implementation so for comparison, let's next look at a random forest. Unlike the random forests above, random forest is another form of non-parametric regression modeling. After initializing a random forest model, I fit the model to the sorted training data using a maximum depth of 2 as a starting point.
+
+
 ```
 # initialize a model
-regr = RandomForestRegressor(random_state=123, max_depth=2)
+regr = RandomForestRegressor(random_state=123, max_depth=3)
 # fit the model
 regr.fit(xtrain_scaled, ytrain.ravel())
 ```
-After initializing a random forest model, I fit the model to the sorted training data using a maximum depth of 2 as a starting point.
-
-To qualify the utility of the model, I found the mean squared error (MSE). Since the maximum depth has a strong influence on model fit, as described above, I reinitialized a random forest model with increasing maximum depths while recording the MSE of these models’ predictions on the testing data, which is seen in the code and depicted in the plot below. As we can see, a maximum depth of 3 proved to be ideal in reducing MSE in this case. The MSE for this random forest was 15.887.
+To qualify the utility of the model, I found the mean squared error (MSE). Since the maximum depth has a strong influence on model fit, as it limits the size of internal decision trees, I reinitialized a random forest model with increasing maximum depths while recording the MSE of these models’ predictions on the testing data, which is seen in the code segment and following plot below. As we can see, a maximum depth of 3 proved to be ideal in reducing MSE in this case. The MSE for this random forest was 15.887.
 ```
 mse_all = []
 for md in range(1,100):
