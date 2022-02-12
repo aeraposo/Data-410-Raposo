@@ -3,6 +3,7 @@
 Based on visibly discernible trends in data, one may come to quick conclusions about approximate parametric (linear) models to represent a
 supposed relationship. Although this method may be an appropriate starting place in estimating a model, it is ultimately riddled with uncertainty
 and may poorly approximate more specific, localized trends. A more suitable option for such analysis is locally weighted regression, or “lowess”.<br/><br/>
+### Math and theory
 **Lowess:**<br/>
 Lowess approximates non-parametric trends by fitting linear models to sequential subsets of data. Subdivisions are split on intervals in one dimension of the data based on a computer determined, or user specified, number of points per interval. Let ![Math](https://render.githubusercontent.com/render/math?math=X) represent
 multidimensional inputdata (a UxP matrix thats transpose is ![Math](https://render.githubusercontent.com/render/math?math=X^T)) and ![Math](https://render.githubusercontent.com/render/math?math=y) be the
@@ -122,7 +123,7 @@ def lowess_reg(x, y, xnew, kern, tau):
 # use the model to make predictions (yhat_test) for the testing data
 yhat_test = lowess_reg(xtrain_scaled.ravel(), ytrain.ravel(),xtest_scaled.ravel(), tricubic, 0.01)
 ```
-*Lowess results:*<br/>
+**Lowess results:**<br/>
 I used mean squared error (MSE) to quantify the accuracy of the lowess model, which was found to be 19.274.
 Tau influences the amplitude of the bump function, which is used to compute model weights that ultimately contribute to model smoothing. After graphing the original model predictions against the true testing data values, I noticed significant irregularities in the graph and, as a result plotted the MSE of model predictions after fitting using different values for tau as seen in the code segment below. After determining the minimum MSE achieved, 15.962 using tau = 0.1 as seen in the graph below, I selected a final lowess model.<br/>
 ```
@@ -143,7 +144,7 @@ regr = RandomForestRegressor(random_state=123, max_depth=3)
 # fit the model
 regr.fit(xtrain_scaled, ytrain.ravel())
 ```
-*Random forest results:*<br/>
+**Random forest results:**<br/>
 To qualify the utility of the model, I found the mean squared error (MSE). Since the maximum depth has a strong influence on model fit, as it limits the size of internal decision trees, I reinitialized a random forest model with increasing maximum depths while recording the MSE of these models’ predictions on the testing data, which is seen in the code segment and following plot below. As we can see, a maximum depth of 3 proved to be ideal in reducing MSE in this case. The MSE for this random forest was 15.887.<br/>
 ```
 mse_all = []
@@ -154,7 +155,7 @@ for md in range(1,100):
   mse_all.append(mse(rfr_yhat_test,ytest))
 ```
 <img src="./mse_rfr_min_samp_split_plot.png" width="400"><br/>
-*Concluding remarks:*<br/>
+**Concluding remarks:**<br/>
 In this example, random forest appears to have slightly out-performed lowess in modeling car miles per gallon (MPG). After graphing both models’ predictions (blue - lowess, red - random forest) along side the true data values, I conclude that both models are comparable in their overall utility and are ultimately very similar. Given the range of y (MPG) values in the testing data (10, 44.6) and MSEs of ~15.5 raise some concerns about the accuracy of both models. As visible in the aforementioned graph, random forrest offers a more smooth model that contributed to a slightly lower MSE, however, it is clear that the elevated MSEs were influenced by the high variance in y (MPG) among testing observations. From this example alone, one cannot deem a single method “better” than another but rather that each has their own strengths that cannot be fully encompassed by the limited testing performed above.<br/>
 <img src="./lowess_tau=0.01_plot.png" width="400"><br/>
 
