@@ -153,4 +153,4 @@ for md in range(1,100):
 In this example, random forest appears to have slightly out-performed lowess in modeling car miles per gallon (MPG). After graphing both models’ predictions (blue - lowess, red - random forest) along side the true data values (y), I conclude that both models are comparable in their overall utility and are ultimately very similar. Given the range of y (MPG) values in the testing data (10, 44.6) and models' MSEs of ~15.5, I questioned the accuracy of both models. As visible in the aforementioned graph, random forrest offers a more smooth model that contributed to a slightly lower MSE, however, it is clear that the elevated MSEs were influenced by the high variance in y (MPG) among testing observations. From this example alone, one cannot deem a single method “better” than another but rather that each has their own strengths that cannot be fully encompassed by the limited testing performed above.<br/>
 <img src="./lowess_tau=0.01_plot.png" width="400"><br/><br/><br/><br/><br/><br/><br/>
 
-<img src="./citations_proj2.png" width="400">
+<img src="./citations_proj2.png" width="700">
