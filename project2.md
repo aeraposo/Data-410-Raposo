@@ -6,35 +6,42 @@ and may poorly approximate more specific, localized trends. A more suitable opti
 **Lowess:**<br/>
 Lowess approximates non-parametric trends by fitting linear models to sequential subsets of data. Subdivisions are split on intervals in one dimension of the data based on a computer determined, or user specified, number of points per interval. Let ![Math](https://render.githubusercontent.com/render/math?math=X) represent
 multidimensional inputdata (a UxP matrix thats transpose is ![Math](https://render.githubusercontent.com/render/math?math=X^T)) and ![Math](https://render.githubusercontent.com/render/math?math=y) be the
-dependent variable. Linear regression determines these linear models, which give a predicted ![Math](https://render.githubusercontent.com/render/math?math=y), known as ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) for each input observation ![Math](https://render.githubusercontent.com/render/math?math=x) in ![Math](https://render.githubusercontent.com/render/math?math=X). Linear regression can be seen as a linear combination of the observed outputs (values of the dependent variable). To understand why this is so, we must further investigate the math behind the assumed form of the models: ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2B\sigma\epsilon) where ![Math](https://render.githubusercontent.com/render/math?math=\epsilon) is independently and identically distributed with mean 0 and standard deviation 1.<br/>
+dependent variable. Linear regression is used to determine the linear models fit on the subintervals of X. Linear regression solutions can be seen as a linear combinations of the observed outputs (values of the dependent variable). To understand why this is so, we must further investigate the math behind the assumed form of the models: ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2B\sigma\epsilon) where ![Math](https://render.githubusercontent.com/render/math?math=\epsilon) is independently and identically distributed with mean 0 and standard deviation 1.<br/><br/>
+![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2B\sigma\epsilon)<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=X^Ty=X^TX\beta%2B\sigma{X^T\epsilon})<br/>
 
 We solve for ![Math](https://render.githubusercontent.com/render/math?math=\beta) by assuming ![Math](https://render.githubusercontent.com/render/math?math=X) is not rank deficient (assume ![Math](https://render.githubusercontent.com/render/math?math=X^TX) is invertible, same as OLS assumption). So,<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\beta=(X^TX)^{-1}(X^Ty)-\sigma(X^TX)^{-1}X^T\epsilon).<br/>
 We take the expected vlaue of this equation and obtain (where ![Math](https://render.githubusercontent.com/render/math?math=\bar{\beta}) is ![Math](https://render.githubusercontent.com/render/math?math=E(\beta)))<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\bar{\beta}=(X^TX)^{-1}(X^Ty))<br/>
-Therefore, the predictions (predicted values) we make are <br/>
+Therefore, the predictions are of the form <br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\bar{\beta}=\hat{y}=X\cdot\beta=X\cdot(X^TX)^{-1}(X^Ty))<br/>
-Now, we can see that predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) (ie, they are a matrix multiplied by ![Math](https://render.githubusercontent.com/render/math?math=y))<br/>
-Applying the above to locally weighted regression, we have<br/>
+Now, we can see that predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) (ie, they are a matrix multiplied by ![Math](https://render.githubusercontent.com/render/math?math=y)).<br/>
+
+
+Applying the above to locally weighted regression, we have<br/><br/>
 ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}=X\cdot\beta=X\cdot(X^TWX)^{-1}(X^TWy))<br/>
 So in the case of lowess, predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) and the computed weights ![Math](https://render.githubusercontent.com/render/math?math=W)
-* ![Math](https://render.githubusercontent.com/render/math?math=W(i)) is the vecor of weights for observation ![Math](https://render.githubusercontent.com/render/math?math=i)
 * The indpendent observations are the rows of the matrix ![Math](https://render.githubusercontent.com/render/math?math=X$). Each row has a number of columns (this is the number of features) - we can denote this number of features by ![Math](https://render.githubusercontent.com/render/math?math=p). As such, every row is a vector in ![Math](https://render.githubusercontent.com/render/math?math=\mathbb{R}^p).
-* The Euclidean distance between 2 independent observations is the Euclidean distance (L2 norm) between the two represented ![Math](https://render.githubusercontent.com/render/math?math=p)-dimensional vectors. The equation is:
-![Math](https://render.githubusercontent.com/render/math?math=dist(\vec{v},\vec{w})=%5Csqrt%7B%5C(v_1-w_1)^2%2B...%2B(v_p-w_p)^2%7D) where ![Math](https://render.githubusercontent.com/render/math?math=v_i) and ![Math](https://render.githubusercontent.com/render/math?math=w_i) represent features of observations ![Math](https://render.githubusercontent.com/render/math?math=v) and ![Math](https://render.githubusercontent.com/render/math?math=w). We will have ![Math](https://render.githubusercontent.com/render/math?math=n) different weight vectors where ![Math](https://render.githubusercontent.com/render/math?math=n) is the number of observations.
+
+
 Parametric models assume the form ![Math](https://render.githubusercontent.com/render/math?math=y=X\beta%2Br\epsilon) where
 ![Math](https://render.githubusercontent.com/render/math?math=\epsilon) is independently and identically distributed with mean 0 and standard
-deviation 1. To determine the ![Math](https://render.githubusercontent.com/render/math?math=\beta) parameters, or weights, of the model, we write ![Math](https://render.githubusercontent.com/render/math?math=X^Ty=X^TX{\beta}X^T)
+deviation 1. To determine the ![Math](https://render.githubusercontent.com/render/math?math=\beta) parameters of the model, we write ![Math](https://render.githubusercontent.com/render/math?math=X^Ty=X^TX{\beta}X^T)
 where ![Math](https://render.githubusercontent.com/render/math?math=X^T) is model noise and ![Math](https://render.githubusercontent.com/render/math?math=E(X^T)=0).
 Thus, ![Math](https://render.githubusercontent.com/render/math?math=E(X^Ty){\cdot}E(X^TX\beta)=X^TX{\cdot}E(\beta)(X^TX)^{-1}{\cdot}E(X^Ty)=E(\beta)),
 which allows the parametric model’s ![Math](https://render.githubusercontent.com/render/math?math=\beta) parameters associated with each vector contained in
-![Math](https://render.githubusercontent.com/render/math?math=X) (representing the different dimensions of the data) to be calculated by
-![Math](https://render.githubusercontent.com/render/math?math=(X^TX)^{-1}). Lowess uses this same process to estimate parametric equations on
-data subintervals as described above and since weights are calculated for individual datapoints, we can ensure that although the model may not be smooth, it will be continuous (no breaks or jumps). It is important to note that a widely varied distribution of datapoints can lead to overfitting if too few or many points are selected for each interval, however, modifications to the kernal (or "bump") fuction can help reduce this.<br/>
+![Math](https://render.githubusercontent.com/render/math?math=X) (representing the different dimensions of the data) to be calculated by ![Math](https://render.githubusercontent.com/render/math?math=(X^TX)^{-1}).
+
+
+Lowess uses this same process to estimate parametric equations on data subintervals as described above and since weights are calculated for individual datapoints, we can ensure that although the model may not be smooth, it will be continuous (no breaks or jumps). It is important to note that a widely varied distribution of datapoints can lead to overfitting if too few or many points are selected for each interval, however, modifications to the kernal (or "bump") fuction can help reduce this.<br/>
+Lowess predictions ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}) are linear combinations of ![Math](https://render.githubusercontent.com/render/math?math=y) and the computed weights ![Math](https://render.githubusercontent.com/render/math?math=W)
+* The indpendent observations are the rows of the matrix ![Math](https://render.githubusercontent.com/render/math?math=X$). Each row has a number of columns (this is the number of features) - we can denote this number of features by ![Math](https://render.githubusercontent.com/render/math?math=p). As such, every row is a vector in ![Math](https://render.githubusercontent.com/render/math?math=\mathbb{R}^p).
 * Weights (W_i) are computed for each observation (x_i) by plugging the Euclidean distance between this observation and each other observation into the selected kernal function. These weights are represented in an dianal nxn matrix (where n is the number of observations).<br/>
+**  The Euclidean distance between 2 independent observations is the Euclidean distance (L2 norm) between the two represented ![Math](https://render.githubusercontent.com/render/math?math=p)-dimensional vectors. The equation is:
+![Math](https://render.githubusercontent.com/render/math?math=dist(\vec{v},\vec{w})=%5Csqrt%7B%5C(v_1-w_1)^2%2B...%2B(v_p-w_p)^2%7D) where ![Math](https://render.githubusercontent.com/render/math?math=v_i) and ![Math](https://render.githubusercontent.com/render/math?math=w_i) represent features of observations ![Math](https://render.githubusercontent.com/render/math?math=v) and ![Math](https://render.githubusercontent.com/render/math?math=w).<br/>
 ```
-# example - computing the wieghts for each observation contained in data x
+# example - computing the weights for each observation contained in data x
 for i in range(1,n):
   # x-x[i]/(2*tau) is plugged into the Euclidean distance formula found in the tricubic kernal function
   # by dividing by 2*tau, we can see how tau influences the bandwidth of K((x-x[i])/(2*tau) (K is the selected kernal)
