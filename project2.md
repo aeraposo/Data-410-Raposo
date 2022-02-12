@@ -72,7 +72,7 @@ The leaves of a decision tree represent different classifications or predictions
 ### Implementation
 After importing the necessary libraries and the cars dataset, I observed a significant difference in the scale of feature observations for x, the independent variable (WGT), and the dependent variable (MPG). For this reason, I opted to rescale x using SKLearn’s standard scaler prior to splitting the data into training and testing batches for each variable. Since I intended to produce graphs to visualize my model accuracy, it was necessary to reorder the data do that the x observations, which would be represented on the x-axis, were in increasing order. There are two logical ways to achieve this are outlined below: <br/>
 
-1. Merge observations into a data frame, use sort_values method to sort based on x observations, and reassign training and testing set variables to the indexed and reshaped columns of the sorted data frame.<br/>
+1) Merge observations into a data frame, use sort_values method to sort based on x observations, and reassign training and testing set variables to the indexed and reshaped columns of the sorted data frame.<br/>
 
 ```
 # sort the training data
@@ -90,7 +90,7 @@ xtest_scaled = df_test_sorted['xts'].values.reshape(-1,1)
 ytest = df_test_sorted['yt'].values.reshape(-1,1)
 ```
 
-2. Create a matrix, sort based on the first column (x train or test) using numpy's argsort method, and reassign training and testing set variables to the indexed columns of the matrix
+2) Create a matrix, sort based on the first column (x train or test) using numpy's argsort method, and reassign training and testing set variables to the indexed columns of the matrix
 
 ```
 # training data
@@ -111,9 +111,10 @@ Now that the data was prepared, I initialized both the lowess and random forest 
 
 def tricubic(x):
   return np.where(np.abs(x)>1,0,70/81*(1-np.abs(x)**3)**3)
-def lowess_reg(x, y, xnew, kern, tau): # x (independent variable), y (dependent variable), xnew (independent testing observation), kern (desired kernal/bump function), tau (amplitude of bump function)
-    # tau is called bandwidth K((x-x[i])/(2*tau))
-    # IMPORTANT: we expect x to the sorted increasingly
+def lowess_reg(x, y, xnew, kern, tau): 
+  # x (independent variable), y (dependent variable), xnew (independent testing observation),
+  # kern (desired kernal/bump function), tau (amplitude of bump function)
+  # tau is called bandwidth K((x-x[i])/(2*tau))
     n = len(x)
     yest = np.zeros(n)
 
