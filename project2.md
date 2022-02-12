@@ -5,7 +5,7 @@ supposed relationship. Although this method may be an appropriate starting place
 and may poorly approximate more specific, localized trends. A more suitable option for such analysis is locally weighted regression, or “lowess”.<br/><br/>
 ### Math and theory
 **Lowess:**<br/>
-Lowess approximates non-parametric trends by fitting linear models to sequential subsets of data. Subdivisions are split on intervals in one dimension of the data based on a computer determined, or user specified, number of points per interval. Let ![Math](https://render.githubusercontent.com/render/math?math=X) represent
+Lowess approximates non-parametric trends by fitting linear models to sequential subsets of data. Subdivisions are split on intervals within the data based on a computer determined, or user specified, number of points per interval. Let ![Math](https://render.githubusercontent.com/render/math?math=X) represent
 multidimensional inputdata (a UxP matrix thats transpose is ![Math](https://render.githubusercontent.com/render/math?math=X^T)) and ![Math](https://render.githubusercontent.com/render/math?math=y) be the
 dependent variable.
 
