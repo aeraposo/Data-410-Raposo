@@ -88,6 +88,7 @@ ytest = M[:,1]
 This sorting can also happen after predictions are made and the same effect will be achieved.<br/>
 Now that the data was prepared, I initialized both the lowess and random forest models. We manually define lowess for 2-dimensional datasets as follows:
 ```
+# tricubic kernal
 def tricubic(x):
   return np.where(np.abs(x)>1,0,70/81*(1-np.abs(x)**3)**3)
 def lowess_reg(x, y, xnew, kern, tau): 
