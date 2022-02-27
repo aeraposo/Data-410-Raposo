@@ -93,5 +93,5 @@ print('The Cross-validated Mean Squared Error for XGB is : '+str(np.mean(mse_xgb
 ```
 After 100 repetitions of model fitting and testing, the recorded MSEs were averaged and returned. The cross-validated MSE for Lowess was 17.046 whereas the MSE of Boosted Lowess was 17.697. This increase in MSE suggests that Boosted Lowess was overfit and may need adjusted hyper-parameters. After adjusting the bandwidth, I found that the optimal value was tau = 0.89, which reduced the MSE for boosted Lowes to 17.227. Finally, XGBoosting had an MSE of 16.168, demonstrating it’s superior ability to balance model specificity and generality over Lowess and Boosted Lowess in this example on the Cars dataset.
 As seen above, XGBoost offered the best performance of the regression algorithms above, however, it’s important to note that each algorithm and boosting method offers benefits for various specific tasks. For example, it may be beneficial to use a boosted Neural Network rather than XGBoost in classification tasks. Additionally, though only Lowess was boosted in the above implementation, boosting can be employed on any regression algorithm, offering hope of continued improvement in the learning strength of both novel and antiquated regression algorithms alike.<br/><br/>
-**Citations**
+**Citations**<br/><br/>
 <img src="./citations_p3.png" width="600"><br/>
