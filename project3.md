@@ -50,7 +50,7 @@ def boosted_lwr(X, y, xnew, kern, tau, intercept):
 As seen in the above code snippet, the gradient booster functions by creating a decision tree trained to predict the residuals of datapoints. The tree is trained on the residuals of Lowess (![Math](https://render.githubusercontent.com/render/math?math=y_i-F(x_i))). The residuals predicted by the tree are summed with the original predictions from Lowess, giving us a vector of boosted predictions.
 As mentioned above, the use of gradient boosting can result in overfitting so in hopes of final improvements in model fit, we will implements XGBoosting.<br/>
 Of the numerous customizable parameters of XGBoost, the gamma and reg_lambda parameters correspond directly to constants found in the method’s the loss and gain functions used to construct the regressor’s trees so it may be necessary to adjust these values through trial and error to perfect overall fit. Like in random forest regression, n_estimators and max_depth dictate the quantity and maximum depth of the model’s decision trees. One additional parameter included is the objective specification, which allows users to specify the type of task the model will be completing. This helps the interpretation of the input parameters and helps determine the expected values of y to which the XGBooster’s predicted residuals will be added.<br/><br/>
-**Conclusions**
+**Concluding Remarks**
 ```
 mse_lwr = [] # lowess
 mse_blwr = [] # boosted lowess
@@ -92,4 +92,5 @@ print('The Cross-validated Mean Squared Error for XGB is : '+str(np.mean(mse_xgb
 ```
 After 100 repetitions of model fitting and testing, the recorded MSEs were averaged and returned. The cross-validated MSE for Lowess was 17.046 whereas the MSE of Boosted Lowess was 17.697. This increase in MSE suggests that Boosted Lowess was overfit and may need adjusted hyper-parameters. After adjusting the bandwidth, I found that the optimal value was tau = 0.89, which reduced the MSE for boosted Lowes to 17.227. Finally, XGBoosting had an MSE of 16.168, demonstrating it’s superior ability to balance model specificity and generality over Lowess and Boosted Lowess in this example on the Cars dataset.
 As seen above, XGBoost offered the best performance of the regression algorithms above, however, it’s important to note that each algorithm and boosting method offers benefits for various specific tasks. For example, it may be beneficial to use a boosted Neural Network rather than XGBoost in classification tasks. Additionally, though only Lowess was boosted in the above implementation, boosting can be employed on any regression algorithm, offering hope of continued improvement in the learning strength of both novel and antiquated regression algorithms alike.<br/><br/>
+**Citations**
 <img src="./citations_p3.png" width="600"><br/>
