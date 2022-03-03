@@ -208,4 +208,4 @@ print("Average MSE after 100 repetitions: ",np.mean(mse_lgbm_full))
 
 After 100 repetitions to account for variation in the random portion of the algorithm-selected data sample, a cross-validated MSE of 14.18 was achieved after an average of 115 iterations. This entire process executed in just 33 seconds, a monumental improvement from gradient boosting and extreme gradient boosting that could not handle only 3 of the 8 provided independent variables. Although LightGBM provides performance and accuracy benefits on the whole dataset, it’s performance on the reduced dataset used for gradient boosting and XGBoost was not as impressive. After the same repetitive training and testing on this dataset, the minimum cross-validated MSE attained was 32.58 after 184 iterations. This is due to unnecessary feature combination on this low-dimensional subset. For this reason, it is best to use LightGBM exclusively on large, high-dimensional datasets.<br/><br/>
 **Citations**<br/>
-<img src="./p4_citations.png" width="350"><br/><br/>
+<img src="./p4_citations.png" width="600"><br/><br/>
