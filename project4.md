@@ -1,6 +1,6 @@
 ### Repeated Boosting With Lowess
-As seen in project 3, boosting can be used to improve model specificity through the normalization of residuals. Although we observed some improvement in accuracy through reductions in cross-validated MSE with the use of gradient and extreme gradient boosting, there may still be potential to decrease model MSE. The general framework of boosting is as outlined in the diagram below.
-<img src="./boosting_process_diagram.png" width="350"><br/>
+As seen in project 3, boosting can be used to improve model specificity through the normalization of residuals. Although we observed some improvement in accuracy through reductions in cross-validated MSE with the use of gradient and extreme gradient boosting, there may still be potential to decrease model MSE. The general framework of boosting is as outlined in the diagram below.<br/><br/>
+<img src="./boosting_process_diagram.png" width="350"><br/><br/>
 Boosting can seem like a difficult and convoluted process, as suggested by the diagram, but it’s truly more streamlined than it appears. Essentially, the boosting process has 4 steps:
 1.	Fit a base regression model to training data and attain model predictions for testing data
 2.	Calculate model residuals for the testing data
@@ -161,7 +161,7 @@ plt.ylabel('MSE')
 plt.legend(['Lowess','Boosted Lowess','XGB'])
 
 ```
-<img src="./mse_with_boosts.png" width="350"><br/>
+<img src="./mse_with_boosts.png" width="350"><br/><br/>
 As seen in the plot above, improvements to the MSEs of Lowess and Gradient Boosted Lowess plateaued at around 1.013 and 1.012 from 6 boosts and the MSE of XGBoost plateaued at around 1.012 from 10 boosts (not pictured in plot). Overall, this method resulted in a total reduction in MSE of 5.147 for Lowess, 4.942 for Gradient Boosted Lowess, and 15.128 for XGBoost. Models for this dataset didn’t appear to overfit from increasing the number of boosts, unlike the Cars dataset. After applying the same above criteria to the Cars dataset, the MSEs of Lowess and Gradient Boosted Lowess were minimized to 11.459 and 11.599 using 6 boosts and the MSE of XGBoost was minimized to 11.519 with 5 boosts, however, after this minimum was reached, the MSEs of these boosteded models increased once the number of optimal boosts was exceeded.<br/><br/>
 ### LightGBM
 Boosting using the Lowess algorithm contrasts the use of decision tree construction in other boosting methods. In particular, we have used gradient boosting and extreme gradient boosting (XGBoosting) in projects 2 and 3 that, unlike Lowess, rely on decision trees in their efforts to normalize model residuals. One additional gradient boosting method we have not yet encountered is LightGBM.
