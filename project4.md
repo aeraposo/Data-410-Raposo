@@ -171,4 +171,36 @@ As described in project 1, when a forest of decision trees is constructed, each 
 2.	Feature bundling<br/>
 
 First, lightGBM determines which datapoints are most influential in model construction. This novel sampling technique, called Gradient-Based One-Side Sampling (GOSS), reduces the quantity of data used without compromising the integrity of the original data distribution. First, the observations (vectors) in highest a\cdot100% of gradients will be selected for the sample (where *a* is a user-specified parameter). Next, a random sample of b\cdot100% of the remaining data will be added to the sample (where *b* is a user-specified parameter). The random nature of this second round of selection allows our sample to maintain the shape of the original data distribution.
-Once the data subset is selected, feature bundling is used to reduce the dimensionality of our subset. This technique allows for further data condensation while minimizing information loss. Before combining features, the merge algorithm identifies exclusive features; those that simultaneously attain nonzero values. These features are combined into an “exclusive feature bundle” by offsetting the values of each feature so they are disjoint sets before merging. For example, if feature A has range \[5-15) and feature B has range \[10,30\], we can offset B by 5 units so that B has an adjusted range of [15,35] and A\cap B = \varnothing. Offsetting the features ranges is important so we can later separate out the distinct sub-features within the combined feature. Now that our dataset has been sufficiently condensed, gradient boosting is performed on the residuals of predictions (essentially, XGBoosting is performed on our modified data), leaving us with final boosted predictions.
+Once the data subset is selected, feature bundling is used to reduce the dimensionality of our subset. This technique allows for further data condensation while minimizing information loss. Before combining features, the merge algorithm identifies exclusive features; those that simultaneously attain nonzero values. These features are combined into an “exclusive feature bundle” by offsetting the values of each feature so they are disjoint sets before merging. For example, if feature A has range \[5-15) and feature B has range \[10,30\], we can offset B by 5 units so that B has an adjusted range of [15,35] and A\cap B = \varnothing. Offsetting the features ranges is important so we can later separate out the distinct sub-features within the combined feature. Now that our dataset has been sufficiently condensed, gradient boosting is performed on the residuals of predictions (essentially, XGBoosting is performed on our modified data), leaving us with final boosted predictions. Since this algorithm is ~20 times faster than standard gradient boosting, the process is repeater iteratively until and optimal model is attained (that is, the best selection data selection is attained that results in a trained model with the lowest MSE when tested).
+```
+# split data into training and testing batches
+xtrain,xtest,ytrain,ytest = tts(X,y)
+
+# package training and testing data into lightGBM datasets
+lgbm_train = lgbm.Dataset(xtrain, ytrain)
+lgbm_eval = lgbm.Dataset(xtest, ytest, reference=lgbm_train)
+
+# define relevant input parameters
+params = {
+    'boosting_type': 'gbdt',
+    'objective': 'regression',
+    'metric': {'l2', 'l1'},
+    'num_leaves': 31,
+    'learning_rate': 0.05,
+    'feature_fraction': 0.9,
+    'bagging_fraction': 0.8,
+    'bagging_freq': 5,
+    'verbose': 0}
+
+# repeatedly train and test, recording MSE of predictions and the optimal iteration
+best_iter=[]
+mse_lgbm_full=[]
+for i in range(100):
+  model_lgbm = lgbm.train(params,lgbm_train,num_boost_round=500,valid_sets=lgbm_eval,callbacks=[lgbm.early_stopping(stopping_rounds=5)])
+  best_iter.append(model_lgbm.best_iteration)
+  y_pred = model_lgbm.predict(xtest, num_iteration=model_lgbm.best_iteration)
+  mse_lgbm_full.append(mse(ytest,y_pred))
+print("Average best iterations:",np.mean(best_iter))
+print("Average MSE after 100 repetitions: ",np.mean(mse_lgbm_full))
+```
+After 100 repetitions to account for variation in the random portion of the algorithm-selected data sample, a cross-validated MSE of 14.18 was achieved after an average of 115 iterations. This entire process executed in just 33 seconds, a monumental improvement from gradient boosting and extreme gradient boosting that could not handle only 3 of the 8 provided independent variables. Although LightGBM provides performance and accuracy benefits on the whole dataset, it’s performance on the reduced dataset used for gradient boosting and XGBoost was not as impressive. After the same repetitive training and testing on this dataset, the minimum cross-validated MSE attained was 32.58 after 184 iterations. This is due to unnecessary feature combination on this low-dimensional subset. For this reason, it is best to use LightGBM exclusively on large, high-dimensional datasets.
