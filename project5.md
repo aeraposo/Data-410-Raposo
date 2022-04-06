@@ -82,3 +82,10 @@ Next, let’s experiment with a different method of minimizing the objective fun
 Penalized least squares minimizes the equation ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}||y-X\beta||_2^2+\sum_{i=1}^ph_\lambda(|\beta_i||)) where ![Math](https://render.githubusercontent.com/render/math?math=h_\lambda) is a penalty that is function of a regularization parameter, ![Math](https://render.githubusercontent.com/render/math?math=\lambda) (as seen in SRL function). SCAD is, however, distinct from other regularization techniques in that its penalty term is defined piecewise as follows:<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=h_\lambda(\beta)=\begin{cases}\lambda|\beta|\text{,%20if%20}|\beta|\leq\lambda\\\frac{a\lambda|\beta|-\beta^2-\lambda^2}{a-1}\text{%20,%20if%20}\lambda%3C|\beta|{\leq}a\lambda\\\frac{\lambda^2(a%2B1)}{2}\text{%20,%20if%20}|\beta|%3Ea\lambda\end{cases}).
 This means that the regularization parameter (![Math](https://render.githubusercontent.com/render/math?math=\lambda)) is a ridge regression problem when the SCAD penalty is used with the least squares objective function. <br/><br/>
+
+
+**Variance of Distance of Ridge Coefficients From Ideal Solution**<br/>
+<img src="./ridge_plot.png" width="350"><br/><br/>
+**Variance of Distance of SCAD Coefficients From Ideal Solution**<br/>
+<img src="./SCAD_plot.png" width="350"><br/><br/>
+
