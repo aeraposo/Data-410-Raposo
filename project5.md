@@ -65,9 +65,9 @@ Simply put, the L2 or Tikhonov norm, which is used to calculate Euclidean distan
 
 Least Absolute Shrinkage and Selection Operator (Lasso) regression uses the L1 norm in its penalty term while Ridge uses the L2 norm.
 That is, Ridge regression minimizes <br/>
-![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha\sum_{j=1}^p\beta_j^2=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha||\beta||_2)) <br/>
+![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha\sum_{j=1}^p\beta_j^2=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha||\beta||_2) <br/>
 while Lasso minimizes
-![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha\sum_{j=1}^p|\beta_j|=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha||\beta||_1))<br/>
+![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha\sum_{j=1}^p|\beta_j|=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha||\beta||_1)<br/>
 Where ![Math](https://render.githubusercontent.com/render/math?math=\alpha) is a constant hyperparameter that is adjusted through trial and error.<br/>
 *other methods use curvilinear paths between points.
 Upon 100-fold cross validation, Lasso and Ridge respectively achieved optimal MAEs of 3.0667 and 4.607. <br/><br/>
