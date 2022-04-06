@@ -52,7 +52,7 @@ class SQRTLasso(BaseEstimator, RegressorMixin):
         return x.dot(self.coef_)
 ```
 
-After initializing the SRL class with a baked-in alpha hyperparameter, we define the fit, f_grad, objective, gradient, and predict methods. In order to make these functions SkLearn compliant, we use the BaseEstimator and RegressorMixin classes, which allow us to concatenate functions using an underscore. For example, when we call model.fit_transform, which will sequentially call the fit method followed by the transform method. As discussed earlier, the minimization of the objective function is reliant on determining the direction of its most dramatic decrease, which is determined by finding the gradient vector of the MSE associated with the model using the updated versions of the original coefficients. Essentially, this process can be thought of as traversing the plane of L by updating the model coefficients, computing the gradient at each point, and determining how to further update the coefficients (what direction to traverse) based on the magnitude of decrease in L. After 100-fold cross validations, the resulting models optimized using SRL have an average mean absolute error of just 3.219 when using an alpha value of 0.1 (which was determined based on the proportion of 0 coefficients in our provided ground truth coefficients, ![Math](https://render.githubusercontent.com/render/math?math=\beta^*).<br/><br/>
+After initializing the SRL class with a baked-in alpha hyperparameter, we define the fit, f_grad, objective, gradient, and predict methods. In order to make these functions SkLearn compliant, we use the BaseEstimator and RegressorMixin classes, which allow us to concatenate functions using an underscore. For example, when we call model.fit_transform, which will sequentially call the fit method followed by the transform method. As discussed earlier, the minimization of the objective function is reliant on determining the direction of its most dramatic decrease, which is determined by finding the gradient vector of the MSE associated with the model using the updated versions of the original coefficients. Essentially, this process can be thought of as traversing the plane of L by updating the model coefficients, computing the gradient at each point, and determining how to further update the coefficients (what direction to traverse) based on the magnitude of decrease in L. After 100-fold cross validations on 100 synthesized datasets, the resulting models optimized using SRL have an average mean absolute error of just 3.219 when using an alpha value of 0.1 (which was determined based on the proportion of 0 coefficients in our provided ground truth coefficients, ![Math](https://render.githubusercontent.com/render/math?math=\beta^*).<br/><br/>
 
 ### Lasso and Ridge
 
@@ -69,13 +69,13 @@ That is, Ridge regression minimizes <br/>
 while Lasso minimizes
 ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha\sum_{j=1}^p|\beta_j|=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha||\beta||_1)<br/>
 Where ![Math](https://render.githubusercontent.com/render/math?math=\alpha) is a constant hyperparameter that is adjusted through trial and error.<br/>
-*other methods use curvilinear paths between points.
-Upon 100-fold cross validation, Lasso and Ridge respectively achieved optimal MAEs of 3.0667 and 4.607. <br/><br/>
+\*other methods use curvilinear paths between points.
+Upon 100-fold cross validations on 100 synthesized datasets, Lasso and Ridge respectively achieved optimal MAEs of 3.0667 and 4.607. <br/><br/>
 
 ### Elastic Net
 
 Elastic Net combines principles of Lasso and Ridge by drawing from both the L1 and L2 norms. First, we define ![Math](https://render.githubusercontent.com/render/math?math=0\leq\lambda\leq1) and ![Math](https://render.githubusercontent.com/render/math?math=\alpha), which is a ratio of the two penalties of Lasso and Ridge. Thus, Elastic Net aims to minimize<br/>
-![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{Residual}_i)^2%2B\alpha(\lambda\cdot\sum_{j=1}^{p}|\beta_j|%2B(1-\lambda)\cdot\sum_{j=1}^{p}\beta_j^2)). Through 100-fold cross validation, elastic net was found to have an optimal MAE of 3.057. <br/><br/>
+![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{Residual}_i)^2%2B\alpha(\lambda\cdot\sum_{j=1}^{p}|\beta_j|%2B(1-\lambda)\cdot\sum_{j=1}^{p}\beta_j^2)). Through 100-fold cross validations on 100 synthesized datasets, elastic net was found to have an optimal MAE of 3.057. <br/><br/>
 
 ### SCAD
 Next, let’s experiment with a different method of minimizing the objective function + penalty using Smoothly Clipped Absolute Deviations (SCAD). SCAD operates similarly to SRL, Lasso, and Ridge because it minimizes penalized least squares.<br/>
@@ -89,7 +89,9 @@ As evident in the performance metrics of mean absolute error listed above, we se
 Since regularization shrinks the magnitude of coefficients, this will result in decreases in the L1 and L2 norms. Particularly, we are interested in finding models with low L2 norms, which indicates a more simplistic, regularized model.<br/><br/>
 <img src="./L1L2table.png" width="350"><br/><br/>
 As seen in the table, SRL and Elastic Net had the lowest L2 norms.<br/>
-Additionally, we must also consider the consistency of variable selection algorithms, which is “the stability of a sparsity pattern for the weights when we run many k-Fold cross-validations”. As seen in the plots below depicting the variance of model coefficients over 100 cross validations, SCAD and Ridge were the most consistent, followed closely by Elastic Net.
+Additionally, we must also consider the consistency of variable selection algorithms, which is “the stability of a sparsity pattern for the weights when we run many k-Fold cross-validations”. As seen in the plots below depicting the variance of model coefficients over 
+
+cross validations, SCAD and Ridge were the most consistent, followed closely by Elastic Net.
 **Variance of Distance of Ridge Coefficients From Ideal Solution**<br/>
 <img src="./ridge_plot.png" width="550"><br/><br/>
 **Variance of Distance of SCAD Coefficients From Ideal Solution**<br/>
