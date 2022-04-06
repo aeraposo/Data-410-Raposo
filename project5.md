@@ -83,7 +83,14 @@ Penalized least squares minimizes the equation ![Math](https://render.githubuser
 ![Math](https://render.githubusercontent.com/render/math?math=h_\lambda(\beta)=\begin{cases}\lambda|\beta|\text{,%20if%20}|\beta|\leq\lambda\\\frac{a\lambda|\beta|-\beta^2-\lambda^2}{a-1}\text{%20,%20if%20}\lambda%3C|\beta|{\leq}a\lambda\\\frac{\lambda^2(a%2B1)}{2}\text{%20,%20if%20}|\beta|%3Ea\lambda\end{cases})<br/>
 This means that the regularization parameter (![Math](https://render.githubusercontent.com/render/math?math=\lambda)) is a ridge regression problem when the SCAD penalty is used with the least squares objective function. <br/><br/>
 
+## Evaluating method efficacy
 
+As evident in the performance metrics of mean absolute error listed above, we see that Elastic Net offered the greatest model accuracy. Variable selection algorithms may cause models to become overly generalized by removing too many features (resulting in an underfit model) or overly specific by eliminating too few features (resulting in an overfit model). In this case, Elastic Net appears to have struck the balance between feature elimination and retention, however, there are more factors to consider beyond MAE.<br/>
+Since regularization shrinks the magnitude of coefficients, this will result in decreases in the L1 and L2 norms. Particularly, we are interested in finding models with low L2 norms, which indicates a more simplistic, regularized model.<br/><br/>
+<img src="./L1L2table.png" width="350"><br/><br/>
+As seen in the table, SRL and Elastic Net had the lowest L2 norms.<br/>
+Additionally, we must also consider the consistency of variable selection algorithms, which is “the stability of a sparsity pattern for the weights when we run many k-Fold cross-validations”. As seen in the plots below depicting the variance of model coefficients over 100 cross validations, SCAD and Ridge were the most consistent, followed closely by Elastic Net.
+![image](https://user-images.githubusercontent.com/67920301/162035979-eaf21e51-abbd-4ab3-ab2d-b33e6e25793d.png)
 **Variance of Distance of Ridge Coefficients From Ideal Solution**<br/>
 <img src="./ridge_plot.png" width="550"><br/><br/>
 **Variance of Distance of SCAD Coefficients From Ideal Solution**<br/>
