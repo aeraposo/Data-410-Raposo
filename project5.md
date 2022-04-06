@@ -85,7 +85,7 @@ This means that the regularization parameter (![Math](https://render.githubuserc
 
 
 **Variance of Distance of Ridge Coefficients From Ideal Solution**<br/>
-<img src="./ridge_plot.png" width="350"><br/><br/>
+<img src="./ridge_plot.png" width="550"><br/><br/>
 **Variance of Distance of SCAD Coefficients From Ideal Solution**<br/>
-<img src="./SCAD_plot.png" width="350"><br/><br/>
+<img src="./SCAD_plot.png" width="550"><br/><br/>
 
