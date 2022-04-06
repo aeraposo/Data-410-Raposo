@@ -61,7 +61,7 @@ Before comparing our next two regularization methods, Lasso and Ridge regression
 ![Math](https://render.githubusercontent.com/render/math?math=||\beta||_2:=\sqrt{\sum_{j=1}^p\beta_j^2})<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=||\beta||_2:=\sqrt{\sum_{j=1}^p\beta_j^2})<br/>
 Simply put, the L2 or Tikhonov norm, which is used to calculate Euclidean distance, forms the most direct path between two points while the L1 norm is the path composed of *p* vectors through the *p*-dimensional space (each vector travels in one dimension while holding distance in other dimensions constant). This is best visualized in a two-dimensional plane as depicted below.<br/><br/>
-<img src="./gradient_descent.png" width="350"><br/><br/>
+<img src="./L1vsL2.png" width="350"><br/><br/>
 
 Least Absolute Shrinkage and Selection Operator (Lasso) regression uses the L1 norm in its penalty term while Ridge uses the L2 norm.
 That is, Ridge regression minimizes <br/>
