@@ -7,13 +7,15 @@ An **objective function** is a function of two or more variables used to assess 
 [Image source](https://blog.paperspace.com/intro-to-optimization-in-deep-learning-gradient-descent/)<br/>
 The goal of minimizing the objective function is to approach the ground truth estimation of ![Math](https://render.githubusercontent.com/render/math?math=\beta^*) (the optimal model coefficients). Since ![Math](https://render.githubusercontent.com/render/math?math=y=x\cdot\beta^*%2B\sigma\cdot\epsilon) and so ![Math](https://render.githubusercontent.com/render/math?math=y-x\cdot\beta^*=\sigma\cdot\epsilon) where ![Math](https://render.githubusercontent.com/render/math?math=\sigma\epsilon) is noise. To minimize this noise, we look for the maximum decrease in the partial derivative of the L2 norm ![Math](https://render.githubusercontent.com/render/math?math=||y-X\beta||_2) (the Euclidean distance between the estimated coefficients and the ideal solution that minimizes the objective function) with respect to ![Math](https://render.githubusercontent.com/render/math?math=\beta). We get a partial derivative of ![Math](https://render.githubusercontent.com/render/math?math=-\frac{(y-X\beta)h_j(X)}{||y-X\beta||_2}), which suggests that we should instead minimize the L2 norm + a regularization term (opposed to only minimizing the L2 norm as suggested above). In order to find the direction of the most dramatic reduction in L, we first obtain the gradient of the objective function (L). We can represent the convex plane of L as vector field, which is composed of the gradient the vectors on individual datapoints (vectors are tangent to points on the plane and indicate the direction and slope (rate of change) of L at each point. <br/><br/>
 
-### Generate Fake Data
-Data simulations are useful for testing both the accuracy of models and the consistency of variable selection algorithms. Consistency is a measure of “the stability of a sparsity pattern for the weights when we run many k-Fold cross-validations”. This this case, we allow our synthetic data to be influenced by our ground truth beta coefficents so that models fit to the data should have coefficients resembleing the ground truth coefficients (ie, the coefficients beta_star). We are able to achieve this using the toeplitz and matmul methods.
+### Generating Data and Selecting Model Hyperparameters
+Data simulations are useful for testing both the accuracy of models and the consistency of variable selection algorithms. Consistency is a measure of “the stability of a sparsity pattern for the weights when we run many k-Fold cross-validations”. This this case, we allow our synthetic data to be influenced by our ground truth beta coefficents, and other hyperparameters such as n, p, v, sigma, and mu, so that models fit to the data should have coefficients resembleing the ground truth coefficients (ie, the coefficients beta_star). We are able to achieve this using the toeplitz and matmul methods.
 ```
 beta_star = np.concatenate(([1]*7,[0]*25,[0.25]*5,[0]*50,[0.7]*15,[0]*1098)) # ground truth coefs
 n = 200 # number of observations
 p = 1200 # number of features
 v = []
+
+# correlation between features i_i and j_j is approximately 0.8^{|i-j|}
 for i in range(p):
   v.append(0.8**i)
 
@@ -23,25 +25,11 @@ np.random.seed(123)
 data = [] # collect the datasets
 
 for r in range(100): # generate 100 sets of fake data
-    x = np.random.multivariate_normal(mu, toeplitz(v), size=n) # this where we generate some fake data
-    y = np.matmul(x,beta_star).reshape(-1,1) + sigma*np.random.normal(0,1,size=(n,1))
-    data.append([x,y])beta_star = np.concatenate(([1]*7,[0]*25,[0.25]*5,[0]*50,[0.7]*15,[0]*1098)) # ground truth coefs
-n = 200 # number of observations
-p = 1200 # number of features
-v = []
-for i in range(p):
-  v.append(0.8**i)
-
-mu = [0]*p
-sigma = 3.5
-np.random.seed(123)
-data = [] # collect the datasets
-
-for r in range(100): # generate 100 sets of fake data
-    x = np.random.multivariate_normal(mu, toeplitz(v), size=n) # this where we generate some fake data
-    y = np.matmul(x,beta_star).reshape(-1,1) + sigma*np.random.normal(0,1,size=(n,1))
+    x = np.random.multivariate_normal(mu, toeplitz(v), size=n)
+    y = np.matmul(x,beta_star).reshape(-1,1) + sigma*np.random.normal(0,1,size=(n,1)) # add noise that is normally distributed
     data.append([x,y])
 ```
+Lastly, before moving on to implementing our 5 regularization techniques, we must decide on the optimal hyperparameters for the models, which we will accomplish using GridSearchCV. GridSearchCV takes a model, any hyperparameters, and lists of values falling throughout their corresponding parameter's possible range. When called and fit on your provided x and y data, GridSearchCV will itterate through all possible combinations of the hyperparameters provided, testing model performance at each step, and returning a dictionary containing the optimial choices of parameters that will yield the greatest performance. Although computationally expensive, GridSearchCV ensures that we pick the right parameters on our first try, achieve the best possible results, and eliminate much of the trial and error or guess work typically associated with this process. All hyperparameters specified for the methods below were determined by GridSearchCV.<br/>
 
 ### Square Root Lasso
 
