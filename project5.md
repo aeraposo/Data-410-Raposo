@@ -1,5 +1,4 @@
 ## Project 5: Regulatization Methods
-
 ### Regularization and Variable Selection
 Regularization is “a constraint is imposed on the weights such as a bound for the sum of the squared weights or the sum of the absolute value of the weights”. This constraint minimizes regression loss functions, which in turn limits the absolute values of model coefficients (meaning they remain closer to 0 or some other imposed bound such as the mean). By minimizing the magnitude of the coefficients, we can eliminate variables whose coefficients are found to be 0. A statistical t-test is used to determine which coefficients are significantly different from 0 so that features whose coefficients are deemed insignificant can be eliminated (coefficients equivalent to 0 so these features do not contribute significantly to predictions). Collectively, variable selection using regularization algorithms is used to improve model fit by helping to prevent or reduce overfitting and underfitting. For this project, we’ll explore 5 regularization methods: Square Root Lasso, Lasso, Ridge, Elastic Net, and SCAD.<br/><br/>
 
