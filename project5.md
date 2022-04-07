@@ -101,6 +101,53 @@ Elastic Net combines principles of Lasso and Ridge by drawing from both the L1 a
 ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{Residual}_i)^2%2B\alpha(\lambda\cdot\sum_{j=1}^{p}|\beta_j|%2B(1-\lambda)\cdot\sum_{j=1}^{p}\beta_j^2)). Through 10-fold cross validations on 100 synthesized datasets, elastic net was found to have an optimal MAE of 3.057. <br/><br/>
 
 ### SCAD
+```
+@njit
+def scad_penalty(beta_hat, lambda_val, a_val):
+    is_linear = (np.abs(beta_hat) <= lambda_val)
+    is_quadratic = np.logical_and(lambda_val < np.abs(beta_hat), np.abs(beta_hat) <= a_val * lambda_val)
+    is_constant = (a_val * lambda_val) < np.abs(beta_hat)
+    
+    linear_part = lambda_val * np.abs(beta_hat) * is_linear
+    quadratic_part = (2 * a_val * lambda_val * np.abs(beta_hat) - beta_hat**2 - lambda_val**2) / (2 * (a_val - 1)) * is_quadratic
+    constant_part = (lambda_val**2 * (a_val + 1)) / 2 * is_constant
+    return linear_part + quadratic_part + constant_part
+
+@njit    
+def scad_derivative(beta_hat, lambda_val, a_val):
+    return lambda_val * ((beta_hat <= lambda_val) + (a_val * lambda_val - beta_hat)*((a_val * lambda_val - beta_hat) > 0) / ((a_val - 1) * lambda_val) * (beta_hat > lambda_val))
+class SCAD(BaseEstimator, RegressorMixin):
+    def __init__(self, a=2,lam=1):
+        self.a, self.lam = a, lam
+  
+    def fit(self, x, y):
+        a = self.a
+        lam   = self.lam
+
+        @njit
+        def scad(beta):
+          beta = beta.flatten()
+          beta = beta.reshape(-1,1)
+          n = len(y)
+          return 1/n*np.sum((y-x.dot(beta))**2) + np.sum(scad_penalty(beta,lam,a))
+
+        @njit  
+        def dscad(beta):
+          beta = beta.flatten()
+          beta = beta.reshape(-1,1)
+          n = len(y)
+          output = -2/n*np.transpose(x).dot(y-x.dot(beta))+scad_derivative(beta,lam,a)
+          return output.flatten()
+        
+        
+        beta0 = np.zeros(p)
+        output = minimize(scad, beta0, method='L-BFGS-B', jac=dscad,options={'gtol': 1e-8, 'maxiter': 50000,'maxls': 50,'disp': False})
+        beta = output.x
+        self.coef_ = beta
+        
+    def predict(self, x):
+        return x.dot(self.coef_)
+```
 Next, let’s experiment with a different method of minimizing the objective function + penalty using Smoothly Clipped Absolute Deviations (SCAD). SCAD operates similarly to SRL, Lasso, and Ridge because it minimizes penalized least squares.<br/>
 Penalized least squares minimizes the equation ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}||y-X\beta||_2^2+\sum_{i=1}^ph_\lambda(|\beta_i||)) where ![Math](https://render.githubusercontent.com/render/math?math=h_\lambda) is a penalty that is function of a regularization parameter, ![Math](https://render.githubusercontent.com/render/math?math=\lambda) (as seen in SRL function). SCAD is, however, distinct from other regularization techniques in that its penalty term is defined piecewise as follows:<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=h_\lambda(\beta)=\begin{cases}\lambda|\beta|\text{,if}|\beta|\leq\lambda\\\frac{a\lambda|\beta|-\beta^2-\lambda^2}{a-1}\text{,if}\lambda%3C|\beta|{\leq}a\lambda\\{\frac{\lambda^2(a%2B1)}{2}}\text{,if}|\beta|%3Ea\lambda\end{cases})<br/>
