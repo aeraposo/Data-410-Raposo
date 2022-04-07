@@ -94,5 +94,4 @@ Additionally, we must also consider the consistency of variable selection algori
 <img src="./ridge_plot.png" width="550"><br/><br/>
 **Variance of Distance of SCAD Coefficients From Ideal Solution**<br/>
 <img src="./SCAD_plot.png" width="550"><br/><br/><br/><br/>
-
 <img src="./p5citations.png" width="550"><br/><br/>
