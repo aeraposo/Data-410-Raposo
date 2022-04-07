@@ -109,9 +109,10 @@ This means that the regularization parameter (![Math](https://render.githubuserc
 ## Evaluating method efficacy
 
 As evident in the performance metrics of mean absolute error listed above, we see that Elastic Net offered the greatest model accuracy. Variable selection algorithms may cause models to become overly generalized by removing too many features (resulting in an underfit model) or overly specific by eliminating too few features (resulting in an overfit model). In this case, Elastic Net appears to have struck the balance between feature elimination and retention, however, there are more factors to consider beyond MAE.<br/>
-Since regularization shrinks the magnitude of coefficients, this will result in decreases in the L1 and L2 norms. Particularly, we are interested in finding models with low L2 norms, which indicates a more simplistic, regularized model.<br/><br/>
+Since regularization shrinks the magnitude of coefficients, this will result in decreases in the L1 and L2 norms. Particularly, we are interested in finding models with low L2 norms (L2 distance to ideal solution), and also may indicate a more simplistic, regularized model.<br/><br/>
 <img src="./L1L2table.png" width="350"><br/><br/>
 As seen in the table, SRL and Elastic Net had the lowest L2 norms.<br/>
+Another factor that affects the L2 norms observed is the reduction of features used (model simplification) through variable selection. On average, SRL, Ridge, and SCAD had 1200 nonzero coefficients, meaning no variables were eliminated, while Lasso had just 151 nonzero coefficients and Elastic Net 269. Noting that our ground truth coefficients (beta_star) had just 27 nonzero coefficients, it appears that Lasso and Elastic Net were more liberal in their selections than SRL, Ridge, and SCAD.<br/>
 Additionally, we must also consider the consistency of variable selection algorithms, which is “the stability of a sparsity pattern for the weights when we run many k-Fold cross-validations”. As seen in the plots below depicting the variance of model coefficients over 100 cross validations on 100 synthesized datasets, SCAD and Ridge were the most consistent, followed closely by Elastic Net.<br/>
 **Variance of Distance of Ridge Coefficients From Ideal Solution**<br/>
 <img src="./ridge_plot.png" width="550"><br/><br/>
