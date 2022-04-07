@@ -79,9 +79,9 @@ After initializing the SRL class with a baked-in alpha hyperparameter, we define
 
 ### Lasso and Ridge
 
-Before comparing our next two regularization methods, Lasso and Ridge regression, we must first understand the difference between L1 and L2 norms. A norm is a path composed of vectors between two points.<br/>
+Before comparing our next two regularization methods, Lasso and Ridge regression, we must first understand the difference between L1 and L2 norms. These norms are the distnace of a path composed of vectors between two points.<br/>
 
-![Math](https://render.githubusercontent.com/render/math?math=||\beta||_2:=\sqrt{\sum_{j=1}^p\beta_j^2})<br/>
+![Math](https://render.githubusercontent.com/render/math?math=||\beta||_1:=\sqrt{\sum_{j=1}^p|\beta_j|})<br/>
 ![Math](https://render.githubusercontent.com/render/math?math=||\beta||_2:=\sqrt{\sum_{j=1}^p\beta_j^2})<br/>
 Simply put, the L2 or Tikhonov norm, which is used to calculate Euclidean distance, forms the most direct path between two points while the L1 norm is the path composed of *p* vectors through the *p*-dimensional space (each vector travels in one dimension while holding distance in other dimensions constant). This is best visualized in a two-dimensional plane as depicted below.<br/><br/>
 <img src="./L1vsL2.png" width="350"><br/><br/>
