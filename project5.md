@@ -7,6 +7,42 @@ An **objective function** is a function of two or more variables used to assess 
 [Image source](https://blog.paperspace.com/intro-to-optimization-in-deep-learning-gradient-descent/)<br/>
 The goal of minimizing the objective function is to approach the ground truth estimation of ![Math](https://render.githubusercontent.com/render/math?math=\beta^*) (the optimal model coefficients). Since ![Math](https://render.githubusercontent.com/render/math?math=y=x\cdot\beta^*%2B\sigma\cdot\epsilon) and so ![Math](https://render.githubusercontent.com/render/math?math=y-x\cdot\beta^*=\sigma\cdot\epsilon) where ![Math](https://render.githubusercontent.com/render/math?math=\sigma\epsilon) is noise. To minimize this noise, we look for the maximum decrease in the partial derivative of the L2 norm ![Math](https://render.githubusercontent.com/render/math?math=||y-X\beta||_2) (the Euclidean distance between the estimated coefficients and the ideal solution that minimizes the objective function) with respect to ![Math](https://render.githubusercontent.com/render/math?math=\beta). We get a partial derivative of ![Math](https://render.githubusercontent.com/render/math?math=-\frac{(y-X\beta)h_j(X)}{||y-X\beta||_2}), which suggests that we should instead minimize the L2 norm + a regularization term (opposed to only minimizing the L2 norm as suggested above). In order to find the direction of the most dramatic reduction in L, we first obtain the gradient of the objective function (L). We can represent the convex plane of L as vector field, which is composed of the gradient the vectors on individual datapoints (vectors are tangent to points on the plane and indicate the direction and slope (rate of change) of L at each point. <br/><br/>
 
+### Generate Fake Data
+Data simulations are useful for testing both the accuracy of models and the consistency of variable selection algorithms. Consistency is a measure of “the stability of a sparsity pattern for the weights when we run many k-Fold cross-validations”. This this case, we allow our synthetic data to be influenced by our ground truth beta coefficents so that models fit to the data should have coefficients resembleing the ground truth coefficients (ie, the coefficients beta_star). We are able to achieve this using the toeplitz and matmul methods.
+```
+beta_star = np.concatenate(([1]*7,[0]*25,[0.25]*5,[0]*50,[0.7]*15,[0]*1098)) # ground truth coefs
+n = 200 # number of observations
+p = 1200 # number of features
+v = []
+for i in range(p):
+  v.append(0.8**i)
+
+mu = [0]*p
+sigma = 3.5
+np.random.seed(123)
+data = [] # collect the datasets
+
+for r in range(100): # generate 100 sets of fake data
+    x = np.random.multivariate_normal(mu, toeplitz(v), size=n) # this where we generate some fake data
+    y = np.matmul(x,beta_star).reshape(-1,1) + sigma*np.random.normal(0,1,size=(n,1))
+    data.append([x,y])beta_star = np.concatenate(([1]*7,[0]*25,[0.25]*5,[0]*50,[0.7]*15,[0]*1098)) # ground truth coefs
+n = 200 # number of observations
+p = 1200 # number of features
+v = []
+for i in range(p):
+  v.append(0.8**i)
+
+mu = [0]*p
+sigma = 3.5
+np.random.seed(123)
+data = [] # collect the datasets
+
+for r in range(100): # generate 100 sets of fake data
+    x = np.random.multivariate_normal(mu, toeplitz(v), size=n) # this where we generate some fake data
+    y = np.matmul(x,beta_star).reshape(-1,1) + sigma*np.random.normal(0,1,size=(n,1))
+    data.append([x,y])
+```
+
 ### Square Root Lasso
 
 The first method we will explore to minimize the objective function + a penalty is the Square Root Lasso (SRL) function. As the name suggests, SRL minimizes the objective function (+ penalty) by minimizing the square root of the objective function. In this case, our objective function is mean squared error, ![Math](https://render.githubusercontent.com/render/math?math=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}).<br/>
@@ -51,7 +87,7 @@ class SQRTLasso(BaseEstimator, RegressorMixin):
         return x.dot(self.coef_)
 ```
 
-After initializing the SRL class with a baked-in alpha hyperparameter, we define the fit, f_grad, objective, gradient, and predict methods. In order to make these functions SkLearn compliant, we use the BaseEstimator and RegressorMixin classes, which allow us to concatenate functions using an underscore. For example, when we call model.fit_transform, which will sequentially call the fit method followed by the transform method. As discussed earlier, the minimization of the objective function is reliant on determining the direction of its most dramatic decrease, which is determined by finding the gradient vector of the MSE associated with the model using the updated versions of the original coefficients. Essentially, this process can be thought of as traversing the plane of L by updating the model coefficients, computing the gradient at each point, and determining how to further update the coefficients (what direction to traverse) based on the magnitude of decrease in L. After 100-fold cross validations on 100 synthesized datasets, the resulting models optimized using SRL have an average mean absolute error of just 3.219 when using an alpha value of 0.1 (which was determined based on the proportion of 0 coefficients in our provided ground truth coefficients, ![Math](https://render.githubusercontent.com/render/math?math=\beta^*).<br/><br/>
+After initializing the SRL class with a baked-in alpha hyperparameter, we define the fit, f_grad, objective, gradient, and predict methods. In order to make these functions SkLearn compliant, we use the BaseEstimator and RegressorMixin classes, which allow us to concatenate functions using an underscore. For example, when we call model.fit_transform, which will sequentially call the fit method followed by the transform method. As discussed earlier, the minimization of the objective function is reliant on determining the direction of its most dramatic decrease, which is determined by finding the gradient vector of the MSE associated with the model using the updated versions of the original coefficients. Essentially, this process can be thought of as traversing the plane of L by updating the model coefficients, computing the gradient at each point, and determining how to further update the coefficients (what direction to traverse) based on the magnitude of decrease in L. After 10-fold cross validations on 100 synthesized datasets, the resulting models optimized using SRL have an average mean absolute error of just 3.219 when using an alpha value of 0.1 (which was determined based on the proportion of 0 coefficients in our provided ground truth coefficients, ![Math](https://render.githubusercontent.com/render/math?math=\beta^*).<br/><br/>
 
 ### Lasso and Ridge
 
@@ -69,12 +105,12 @@ while Lasso minimizes
 ![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha\sum_{j=1}^p|\beta_j|=\frac{1}{n}\sum_{i=1}^{n}(\text{residual}_{i})^2%2B\alpha||\beta||_1)<br/>
 Where ![Math](https://render.githubusercontent.com/render/math?math=\alpha) is a constant hyperparameter that is adjusted through trial and error.<br/>
 \*other methods use curvilinear paths between points.
-Upon 100-fold cross validations on 100 synthesized datasets, Lasso and Ridge respectively achieved optimal MAEs of 3.0667 and 4.607. <br/><br/>
+Upon 10-fold cross validations on 100 synthesized datasets, Lasso and Ridge respectively achieved optimal MAEs of 3.0667 and 4.607. <br/><br/>
 
 ### Elastic Net
 
 Elastic Net combines principles of Lasso and Ridge by drawing from both the L1 and L2 norms. First, we define ![Math](https://render.githubusercontent.com/render/math?math=0\leq\lambda\leq1) and ![Math](https://render.githubusercontent.com/render/math?math=\alpha), which is a ratio of the two penalties of Lasso and Ridge. Thus, Elastic Net aims to minimize<br/>
-![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{Residual}_i)^2%2B\alpha(\lambda\cdot\sum_{j=1}^{p}|\beta_j|%2B(1-\lambda)\cdot\sum_{j=1}^{p}\beta_j^2)). Through 100-fold cross validations on 100 synthesized datasets, elastic net was found to have an optimal MAE of 3.057. <br/><br/>
+![Math](https://render.githubusercontent.com/render/math?math=\frac{1}{n}\sum_{i=1}^{n}(\text{Residual}_i)^2%2B\alpha(\lambda\cdot\sum_{j=1}^{p}|\beta_j|%2B(1-\lambda)\cdot\sum_{j=1}^{p}\beta_j^2)). Through 10-fold cross validations on 100 synthesized datasets, elastic net was found to have an optimal MAE of 3.057. <br/><br/>
 
 ### SCAD
 Next, let’s experiment with a different method of minimizing the objective function + penalty using Smoothly Clipped Absolute Deviations (SCAD). SCAD operates similarly to SRL, Lasso, and Ridge because it minimizes penalized least squares.<br/>
