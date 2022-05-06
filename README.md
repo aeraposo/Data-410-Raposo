@@ -9,3 +9,4 @@
 [Project 4: A Novel Boosting Method and Exploring LightGBM](https://aeraposo.github.io/Data-410-Raposo/project4)<br/>
 [Project 5: Regularization and Variable Selection](https://aeraposo.github.io/Data-410-Raposo/project5)<br/>
 [Project 6: Final Project Proposal](https://aeraposo.github.io/Data-410-Raposo/project6)<br/>
+[Final Project 6: Predicting Saturated fat Consumption to Gauge Diet Quality in Child WIC Participants](https://aeraposo.github.io/Data-410-Raposo/midal)<br/>
