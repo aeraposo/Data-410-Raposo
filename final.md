@@ -7,7 +7,7 @@ With the goals of reducing food insecurity and improving diet quality, several g
 One nutrient that is of significant concern in assessing diet quality is the quantity of saturated fat consumed. The structure of saturated fats contains no double bonds, meaning they are fully saturated with H atoms. This structure allows molecules to easily stack, resulting in a solid composition at room temperature. When consumed and metabolized, saturated fats cause the liver to synthesize large volumes of low-density lipoprotein (LDL) “bad” cholesterol and a small quantity of high-density lipoprotein (HDL) “good” cholesterol. Circulating LDL cholesterol can bind to the endothelial lining of the vascular system, resulting in arterial microtears, inflammation, reduced endothelial elasticity, plaque formation, and arterial narrowing. Chronically, these internal implications compound, which leads conditions such as obesity, hypertension, atherosclerosis (heart disease), stroke, and more. The medical implications of food choices are both underestimated and sever so it is of paramount importance to address harmful diet patterns at a young age to reduce or prevent life-threatening conditions that become more apparent during adult years. <br/><br/>
 
 ### Methods
-
+#### Variable Selection
 The goal of this research is to predict the level of saturated fat consumption in child WIC participants based on age and other dietary metrics such calorie, total fat, sugar, and fiber intake. Although this metric is just one small portion of what someone’s overall diet may look like, saturated fats are found in their highest concentrations in highly processed food pastries, processed or fatty meats, and solids fats such as butter, which may indicate poor diet quality when consumed in excess. The data used will come from the ‘WIC Infant and Toddler Feeding Practices Study-2 (WIC ITFPS-2): Prenatal, Infant Year, Second Year, Third Year, and Fourth Year’ dataset collected by USDA. The dataset contains 32,750 observations of 105 features related to the diets of 0-4 year old participants so a regularization and variable selection procedure will be necessary.<br/><br/>
 
 
@@ -54,10 +54,17 @@ Although Ridge was found to be the most accurate and consistent choice on data s
 After identifying the variables eliminated by Lasso, I subset the data to isolate the features deemed important for analysis. Among these retained features, I noticed that several of the variables which contributed most strongly were highly correlated with saturated fat consumption. Namely, variables such as total fat and palmitic acid (a type of saturated fat) consumption were logically correlated to total saturated fat consumption so I opted to manually remove these features before proceeding to model testing and selection.<br/>
 
 
+#### Model Selection
+Next, I modeled the relationship between the independent variables (selected using aforementioned algorithm) and the dependent variable (quantity of saturated fat consumed) using numerous modeling techniques. The model types I will compare are Locally Weighted Regression (Lowess), Random Forest Regression, and Generalized Additive Modeling
 
-Next, I will model the relationship between the independent variables (selected using aforementioned algorithm) and the dependent variable (quantity of saturated fat consumed). Next, I will identify an ideal model for this data. The model types I will compare are Locally Weighted Regression (Lowess) and Random Forest Regression – model selection will be based on the MSE and MAE through a k-fold cross validation process on reserved testing data.
+##### Lowess
+Because the reduced dataset still contains over 50 features and over 32,000 observatins, Lowess is unable to regress due to maximum runtime constraints. After reducing the model to just 10 features - 
 
 
+
+– model selection will be based on the MSE and MAE through a k-fold cross validation process on reserved testing data.
+
+If we boost Lowess and RFR, can they out-preform GAM??
 
 Additionally, I will test boosting methods such as XGBoost, LightGBM, and a homemade booster that I developed for project 3, which could be incorporated to improve model accuracy. Using this model, I will make comparisons between the predicted saturated fat consumption of WIC participants, the recommended limit of saturated fat consumption for their age, and national averages of saturated fat consumption for the child’s age bracket to gauge if WIC may be accomplishing its goal improving diet quality. This conclusion could help inform changes to larger nutrition assistance programs such as SNAP that have been unsuccessful with this objective.
 
