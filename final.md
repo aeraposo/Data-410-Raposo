@@ -9,11 +9,7 @@ One nutrient that is of significant concern in assessing diet quality is the qua
 ### Methods
 #### Variable Selection
 The goal of this research is to predict the level of saturated fat consumption in child WIC participants based on age and other dietary metrics such calorie, total fat, sugar, and fiber intake. Although this metric is just one small portion of what someone’s overall diet may look like, saturated fats are found in their highest concentrations in highly processed food pastries, processed or fatty meats, and solids fats such as butter, which may indicate poor diet quality when consumed in excess. The data used will come from the ‘WIC Infant and Toddler Feeding Practices Study-2 (WIC ITFPS-2): Prenatal, Infant Year, Second Year, Third Year, and Fourth Year’ dataset collected by USDA. The dataset contains 32,750 observations of 105 features related to the diets of 0-4 year old participants so a regularization and variable selection procedure will be necessary.<br/><br/>
-
-
-In project 5, we identified 5 useful variable selection algorithms: Square Root Lasso, Lasso, Ridge, Elastic Net, and SCAD.
-
-As in project 5, GridSearchCV was used to identify the optimal choice of alpha for each algorithm. In the cases of Lasso and Elastic Net, the GridSearchCV method did not converge so I wrote my own hyperparameter-tuning function ("try_alphas").
+In project 5, we identified 5 useful variable selection algorithms: Square Root Lasso, Lasso, Ridge, Elastic Net, and SCAD. As in project 5, GridSearchCV was used to identify the optimal choice of alpha for each algorithm. In the cases of Lasso and Elastic Net, the GridSearchCV method did not converge so I wrote my own hyperparameter-tuning function ("try_alphas").
 
 ```
 def try_alphas(rid = False, lass = False, EN = False, min_val = 0.01, max_val = 1.01, step = 0.1):
@@ -75,7 +71,24 @@ Although the random forest model is promising because of its apparent accuacy, i
 *** How the GAM works ***
 At their core, generalized Additive Models (GAMs) are linear models but unlike typical linear models like basic linear regression, GAMs are able to learn nonlinear trends. This learning is achieved by starting with a base linear model ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}=\beta_0%2B\beta_1x_1%2B...%2B\beta_jx_j). With each iteration, the coefficients (![Math](https://render.githubusercontent.com/render/math?math=\beta_i)) of the model are adjusted. These coefficients, however, are represented by a "flexible function which allows for nonlinear relationships" called a spline (Shafi, 2021). Each spline represents (possible nonlinear) trends within a distinct feature. The sum these splines composes the GAM so we can have up to k splines where k is the number of features in your dataset. More conservative models will use fewer spline and will therefore execute more quickly. Using the reduced WIC dataset, our GAM predictions had an average MSE of 3.654 after a 10-fold cross validation (on the full dataset with all features beside total saturated fat consumption, the MSE was ~![Math](https://render.githubusercontent.com/render/math?math=0.004\cdot10^{-13})).
 Each fold of the 10-fold cross validation using a conservative model with 4 splines took ~1 minute to execute, lending to GAM's comparative performance advantage over random forest (note - scaling did not affect the accuracy of GAM). Next, I experimented with a riskier model that was more likely to overfit by increasing the number of splines to 64 (the number of features remaining in the dataset after removing all features directly contributing to fat consumption). Unfortunately, this was too great a demand for Collab so I reduced the number of splines to 32 - predictions using this model had an MSE of 52.653, which indicates clearly that the model was severely overfit (no cross validations were performed since the run time for one iteration/fold was ~15 minutes).
-
+Lastly, we saw the success of gradient boosting in project 3 so using our most successful model (our GAM), I boosted the predictions using decision trees trained on the residuals of predictions.
+```
+def boosted_gam(X_train, X_test, y_train, y_test):
+  # Get predictions from the base GAM model
+  gam = LinearGAM(n_splines=5).gridsearch(X_train, y_train,objective='GCV')
+  Fx = gam.predict(X_train)
+  # Compute the residuals
+  new_y = y_train - Fx # vector of residuals on training data
+  # Train a decision rree on the residuals, y_i - F(x_i)
+  tree_model = DecisionTreeRegressor(max_depth=2, random_state=123)
+  tree_model.fit(X_train,new_y)
+  # Make boosted predictions
+  predictions = gam.predict(X_test)
+  output = tree_model.predict(X_test) + predictions
+  mse_out = mse(output,y_test) # compute mse
+  return mse_out # return the mse of boosted predictions
+```
+This boosted model had an MSE of 3.604, a slight reduction in MSE compared to the unboosted model (whose MSE was 3.654)
 
 – model selection will be based on the MSE and MAE through a k-fold cross validation process on reserved testing data.
 
