@@ -67,12 +67,15 @@ If a node is split, a new parent node is created, which is populated in the next
 First, we observe that saturated fat consumption in the WIC participant dataset has a range of 191.58 (min of 0, max of 191.58) and a standard deviation of 7.793.<br/>
 <img src="./WIC_distribution.png" width="350"><br/>
 As we can see in the above histogram, the distribution first appears quite wide, however, using the quantile function, we are able to subset the lower portion of data and see that 98% of the data is less than 37.071. When we plot this subset of the dependent feature, we see (in the smaller plot) a relatively normal distribution with a slight right skew. Given the proficiency of random forest in handeling large quantities of high-dimensional training data and the fairly limited range and low standard deviation of the devependent variable, we expect decent performance from this regressor on the WIC participant dataset.<br/>
-As expected, random forest performed well, yielding an MSE of just 0.0704 on testing data over 10-fold cross validations.
+As expected, random forest performed well, yielding an MSE of 4.002 on unscaled testing data over 10-fold cross validations (note - model performance was signigicantly greater without the use of a scaler on the independent features).
 
 ##### Generalized Additive Model (GAM)
 Although the random forest model is promising because of its apparent accuacy, its performance is not ideal for a dataset of this size. Each fold of the cross validation took ~1.5 minutes to execute, making this method extremely computationally expensive (which in turn restricts the number of cross validations we can perform). For this reason, we will experiment with one additional model framework - the generalized additive model.
 
 *** How the GAM works ***
+At their core, generalized Additive Models (GAMs) are linear models but unlike typical linear models like basic linear regression, GAMs are able to learn nonlinear trends. This learning is achieved by starting with a base linear model ![Math](https://render.githubusercontent.com/render/math?math=\hat{y}=\beta_0%2B\beta_1x_1%2B...%2B\beta_jx_j). With each iteration, the coefficients (![Math](https://render.githubusercontent.com/render/math?math=\beta_i)) of the model are adjusted. These coefficients, however, are represented by a "flexible function which allows for nonlinear relationships" called a spline (Shafi, 2021). Each spline represents (possible nonlinear) trends within a distinct feature. The sum these splines composes the GAM so we can have up to k splines where k is the number of features in your dataset. More conservative models will use fewer spline and will therefore execute more quickly. Using the reduced WIC dataset, our GAM predictions had an average MSE of 3.654 after a 10-fold cross validation (on the full dataset with all features beside total saturated fat consumption, the MSE was ~![Math](https://render.githubusercontent.com/render/math?math=0.004\cdot10^{-13})).
+Each fold of the 10-fold cross validation using a conservative model with 4 splines took ~1 minute to execute, lending to GAM's comparative performance advantage over random forest (note - scaling did not affect the accuracy of GAM). Next, 
+
 
 – model selection will be based on the MSE and MAE through a k-fold cross validation process on reserved testing data.
 
@@ -91,3 +94,8 @@ During the model selection phase, I hoped to use a Locally Weighted Regression (
 ### Methods
 
 ### Results
+
+
+
+# Citations
+https://towardsdatascience.com/generalised-additive-models-6dfbedf1350a#c407
