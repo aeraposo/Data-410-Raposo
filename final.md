@@ -55,10 +55,13 @@ After identifying the variables eliminated by Lasso, I subset the data to isolat
 
 
 #### Model Selection
-Next, I modeled the relationship between the independent variables (selected using aforementioned algorithm) and the dependent variable (quantity of saturated fat consumed) using numerous modeling techniques. The model types I will compare are Locally Weighted Regression (Lowess), Random Forest Regression, and Generalized Additive Modeling
+Next, I modeled the relationship between the independent variables (selected using aforementioned algorithm) and the dependent variable (quantity of saturated fat consumed) using numerous modeling techniques. The model types I will compare are  Random Forest Regression, and Generalized Additive Modeling.
 
-##### Lowess
-Because the reduced dataset still contains over 50 features and over 32,000 observatins, Lowess is unable to regress due to maximum runtime constraints. After reducing the model to just 10 features - 
+##### 
+
+
+##### Random Forest Regressor
+Next, I moved on to the random forest 
 
 
 
@@ -71,7 +74,8 @@ Additionally, I will test boosting methods such as XGBoost, LightGBM, and a home
 
 Lastly, I eliminated additional variables that were correlated with saturated fat consumption and other variables that were not easily measurable (so this model could be more accessible for WIC participants)
 
-
+##### Future Research
+During the model selection phase, I hoped to use a Locally Weighted Regression (Lowess) as a model to compare other "prepackaged" models to. However, because the reduced dataset contained over 50 features and over 32,000 observatins, Lowess was unable to regress due to maximum runtime constraints. For this reason, I reduced the dataset to 10 features by using a correlation matrix to determine the features with the greatest correlations with the dependent variable. After determining these 10 features, I noticed that several were measures of consumption of specific saturated, monounsaturated, and polyunsaturated fats such as oleic acid. Because the consumption of these fats have a known correlation with saturated fat consumption and because the dietary consumption of these fats are more challenging to measure (a consideration when assessing the utility of the model for the target population, WIC participants), I chose to eliminate these features. After reducing the dataset to 10, easilty measureable features such as carbohydrate, protein, and total caloric consumption, a furhter reduction to just 5 features was made. Given both subsets, Lowess was still unable to regress due to the quantity of large quantity of observations. In the future, as time would allow, I would next use stratified a sampling method to further subset this data by reducing the number of observations while mantaining the original distribution, holding population mean and other metrics constant.
 
 [Dataset Link](https://data.nal.usda.gov/dataset/wic-infant-and-toddler-feeding-practices-study-2-wic-itfps-2-prenatal-infant-year-second-year-third-year-and-fourth-year-datasets-0![image](https://user-images.githubusercontent.com/67920301/163575230-f57eae51-4c4e-4084-ad37-6f396af8c22a.png))
 
