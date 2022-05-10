@@ -67,7 +67,12 @@ If a node is split, a new parent node is created, which is populated in the next
 First, we observe that saturated fat consumption in the WIC participant dataset has a range of 191.58 (min of 0, max of 191.58) and a standard deviation of 7.793.<br/>
 <img src="./WIC_distribution.png" width="350"><br/>
 As we can see in the above histogram, the distribution first appears quite wide, however, using the quantile function, we are able to subset the lower portion of data and see that 98% of the data is less than 37.071. When we plot this subset of the dependent feature, we see (in the smaller plot) a relatively normal distribution with a slight right skew. Given the proficiency of random forest in handeling large quantities of high-dimensional training data and the fairly limited range and low standard deviation of the devependent variable, we expect decent performance from this regressor on the WIC participant dataset.<br/>
+As expected, random forest performed well, yielding an MSE of just 0.0704 on testing data over 10-fold cross validations.
 
+##### Generalized Additive Model (GAM)
+Although the random forest model is promising because of its apparent accuacy, its performance is not ideal for a dataset of this size. Each fold of the cross validation took ~1.5 minutes to execute, making this method extremely computationally expensive (which in turn restricts the number of cross validations we can perform). For this reason, we will experiment with one additional model framework - the generalized additive model.
+
+*** How the GAM works ***
 
 – model selection will be based on the MSE and MAE through a k-fold cross validation process on reserved testing data.
 
